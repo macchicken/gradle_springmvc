@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+            http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/tx
+            http://www.springframework.org/schema/tx/spring-tx.xsd
+            http://www.springframework.org/schema/aop
+            http://www.springframework.org/schema/aop/spring-aop.xsd
+            http://www.springframework.org/schema/context
+            http://www.springframework.org/schema/context/spring-context.xsd">
+ 
+<bean id="postgreldataSource" class="org.apache.commons.dbcp2.BasicDataSource">
+     <property name="driverClassName" value="org.postgresql.Driver"></property>
+     <property name="url" value="jdbc:postgresql://127.0.0.1:20015/postgres"></property>
+     <property name="username" value="postgres"></property>
+     <property name="password" value="1qazXSW@"></property>
+     <property name="initialSize" value="0" />
+     <property name="maxTotal" value="20"></property>
+     <property name="maxIdle" value="20"></property>
+     <property name="minIdle" value="0"></property>
+     <property name="maxWaitMillis" value="5000"></property>
+     <property name="defaultAutoCommit" value="true"></property>
+     <property name="removeAbandonedOnBorrow" value="true"></property>
+     <property name="removeAbandonedTimeout" value="60"></property>
+     <property name="logAbandoned" value="true"></property>
+</bean>
+<!--<bean id="postgreldataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+  <property name="jndiName"><value>java:comp/env/jdbc/mypostgredb</value></property>
+ </bean>-->
+<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+  <property name="dataSource" ref="postgreldataSource" />
+</bean>
+<!-- enable transaction annotation support -->
+<tx:annotation-driven transaction-manager="transactionManager" />
+
+
+<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+  <property name="dataSource" ref="postgreldataSource" />
+  <property name="mapperLocations" value="/WEB-INF/config/sqlmap-config.xml" />
+  <property name="typeAliases">
+    <array>
+        <value>main.java.dto.PersonVS</value>
+        <value>main.java.dto.State</value>
+    </array>
+  </property>
+</bean>
+<bean id="personMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">  
+    <property name="mapperInterface" value="main.java.dao.PersonDao" />  
+    <property name="sqlSessionFactory" ref="sqlSessionFactory" />  
+</bean> 
+
+<bean id="editService" class="main.java.service.EditServiceInMemory" />
+<bean id="personInMemorySerive" class="main.java.service.PersonService" />
+
+<bean id="newPersonSerivce" class="main.java.service.NewPersonSevice" >
+    <property name="personDao" ref="personMapper" />
+</bean>
+
+</beans>

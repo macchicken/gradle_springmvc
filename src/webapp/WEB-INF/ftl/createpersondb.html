@@ -1,0 +1,97 @@
+<html>
+	  <body>
+		  <div id="pagetitle">
+		  </div>
+		 
+		  <form id="saveOrUpdatePersonForm" name="saveOrUpdatePersonForm" action="/gradle_springmvc-1.0/mymvc/saveOrUpdatePersonindb.do" onsubmit="return false;" method="post">
+			<p></p><table>
+			<tbody>
+				<tr>
+					<td><label for="lastName" class="label">First name:</label></td>
+					<td><input type="text" name="firstName" id="firstName"></td>
+				</tr>
+				<tr>
+					<td><label for="lastName" class="label">Last name:</label></td>
+					<td><input type="text" name="lastName" id="lastName"></td>
+				</tr>
+				<tr>
+					<td><label for="lastName" class="label">Email address:</label></td>
+					<td><input type="text" name="email" id="email"></td>
+				</tr>
+				<tr>
+					<td><label for="lastName" class="label">Phone number(999-999-9999):</label></td>
+					<td><input type="text" name="phone" id="phone"></td>
+				</tr>
+				<tr>
+					<td><label for="lastName" class="label">Favourite Sports:</label></td>
+					<td><input type="text" name="sport" id="sport"></td>
+				</tr>
+				<tr>
+					<td><label for="lastName" class="label">Gender:</label></td>
+					<td><input type="text" name="gender" id="gender"></td>
+				</tr>
+				<tr>
+					<td><label for="lastName" class="label">Age:</label></td>
+					<td><input type="text" name="age" id="age"></td>
+				</tr>
+				<input hidden type="text" name="id" id="id" value="${personid}">
+				<tr><td colspan="2"><p></p></tr>
+				<tr><td colspan="2"><p></p></tr>
+				<tr>
+					<td colspan="2"><div align="right"><input type="submit" id="saveOrUpdatePerson" value="Save"></div></td>
+				</tr>
+		  </tbody></table></form>
+		  <p><a id ="InputPersonback" name="InputPersonback" href="javascript:void(0)" urllink="/gradle_springmvc-1.0/mymvc/myhelloworld.do">back to hello world Welcome</a>.</p>
+		  <script type="text/javascript">
+			$(function ($) {
+				$("#InputPersonback").on('click', function () {
+					var urllink=$(this).attr('urllink');
+					$("#page-content-area").load(urllink,null, function () {console.log("InputPersonback div load partial page")});});
+				jQuery.validator.addMethod("isNinedigitNum", function(value, element) {   
+					var phoneexpr = /\d{3}-\d{3}-\d{4}/;
+					return this.optional(element) || (phoneexpr.test(value));
+				}, "plz enter valid phone number");
+				var personValidate=function(){
+					return $("#saveOrUpdatePersonForm").validate({
+							rules:{
+								"firstName":{ required:true},
+								"lastName":{ required:true},
+								"phone":{isNinedigitNum:true},
+								"age":{digits:true}},
+							messages: {
+								"firstName": {required:"must have first name"},
+								"lastName": {required:"must have last name"},
+								"phone":{isNinedigitNum:"plz enter valid phone number,should be(999-999-9999)"},
+								"age": {digits:"must enter a valid age"}},
+							errorPlacement: function (error, element) {
+								element.attr({ placeholder: error.text() })
+							}
+							});};
+				$("#saveOrUpdatePerson").click(function(){
+					var validResult = personValidate();console.log(validResult);
+					if (validResult.form()){
+						var actionlink=$("#saveOrUpdatePersonForm").attr('action');
+						$.post(actionlink, $("#saveOrUpdatePersonForm").serialize()).success(function (result, tStatus) {
+							console.log(result);console.log(tStatus);
+							if (tStatus==="success"&&result.success){
+								$("#page-content-area").load("/gradle_springmvc-1.0/mymvc/viewpersonindb.do",null,function(){
+									console.log("loaded view person in db");
+								});
+							}
+						});
+					}else{validResult.focusInvalid();}});
+				personValidate();
+				if ($("#id").val()==="-1"){$("#pagetitle").html("<h3>Create Person in db</h3>");}else{$("#pagetitle").html("<h3>Edit Person in db</h3>");
+					$.get("/gradle_springmvc-1.0/mymvc/getPersonindb.do", {id:$("#id").val()},function(result){
+						if (result.success){
+							$("#saveOrUpdatePersonForm").find("input:text").each(function(i,e){
+								if (e.id!==undefined){$(e).val(result.person[e.id]);}
+							});
+						}
+					});
+				}
+			})
+		  </script>
+	
+	  </body>
+</html>

@@ -1,0 +1,40 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'war'
+
+version = '1.0'
+
+dependencies {
+    compile fileTree(dir: 'lib', include: '*.jar')
+}
+
+war{
+	from("src/resources") {  
+	    into("WEB-INF/classes")  
+	}
+	from("src/webapp") {  
+        into("")
+    }
+}
+
+task copywebapp(type:Copy){
+	from "src/webapp"
+    into "$tomcatWebAppDir/$projectName"
+    exclude 'assets/*'
+}
+task copyresources(type:Copy) {
+	from "src/resources"
+    into ("$tomcatWebAppDir/$projectName/WEB-INF/classes")  
+}
+task copymanifest(type:Copy) {
+	from "build/tmp/war"
+    into "$tomcatWebAppDir/$projectName/META-INF"  
+	include "MANIFEST.MF"
+}
+task copyclasses(type:Copy) {
+	from "build/classes/main"
+    into "$tomcatWebAppDir/$projectName/WEB-INF/classes"  
+}
+task exploded(dependsOn: [copywebapp,copyresources,copymanifest,copyclasses]){
+	println "finished----------"
+}

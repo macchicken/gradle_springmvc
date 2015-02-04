@@ -1,0 +1,31 @@
+<html>
+  <body>
+	<h1>Hello World!</h1>
+  	<h1>Welcome to The Wonderful World of Spring MVC</h1>
+	<div id="messageText">
+		<p id="message"></p>
+		<p id="userName"></p>
+		<p>you've said hello</p>
+		<p id="helloCount"></p>
+		<p>times</p>
+	</div>
+	<p><button id="sayHello" name="sayHello" value="Say hello">Say hello</button></p>
+    <p><a href="#" >back to Another Welcome</a>.</p>
+  </body>
+  <script type="text/javascript">
+  $(function ($) {
+	$("#sayHello").click(function(){
+		if ($("#helloCount").text()!==""){var cc=$("#helloCount").text()}else{var cc=0;}
+		$.get("/gradle_springmvc-1.0/mymvc/getMessageInJson.do", { name: "", message: "" ,count:cc},function(result){
+			console.log(result);
+			if (result.success){
+				$("#messageText").find("p").each(function(i,e){
+					if (e.id!==undefined){$(e).html(result.messageObj[e.id]);}
+				});
+			}
+		},dataType='json');
+	});
+  
+  })
+  </script>
+</html>

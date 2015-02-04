@@ -1,0 +1,33 @@
+<html>
+<body>
+<h1>Welcome to The Wonderful World of Spring MVC</h1>
+
+<ul id="HelloWorldExtend" name="HelloWorldExtend">
+<li>
+<p><a href='javascript:void(0)' urllink='/gradle_springmvc-1.0/mymvc/editpersonview.do'>Edit your personal information</a></p>
+</li>
+<li>
+<p><a href="javascript:void(0)" urllink="/gradle_springmvc-1.0/mymvc/createperson.do"> Create new person</a>.</p>
+</li>
+<li>
+<p><a href="javascript:void(0)" urllink="/gradle_springmvc-1.0/mymvc/viewperson.do" > view current person</a>.</p>
+</li>
+<li>
+<p><a href="javascript:void(0)" urllink="/gradle_springmvc-1.0/mymvc/viewpersonindb.do" > view current person in database</a>.</p>
+</li>
+</ul>
+<script type="text/javascript">
+	$(function ($) {
+		var temp2=$("#HelloWorldExtend").find("a");
+		console.log(temp2);
+		$(temp2).each(function (i, e) {
+			$(e).on('click', function () {
+				var urllink=$(this).attr('urllink');
+				console.log(urllink);
+				$("#page-content-area").load(urllink,null, function () {console.log("helloworld div load partial page")});
+			});
+		});
+	});
+</script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<html>
+  <body>
+  <h3>View People</h3>
+  <hr/>
+	<div id="personcontent">
+	</div>
+     
+    <p><a href="javascript:void(0)" urllink="/gradle_springmvc-1.0/mymvc/createperson.do"> Create new person.</a></p>
+    <p><a href="javascript:void(0)" urllink="/gradle_springmvc-1.0/mymvc/myhelloworld.do">back to hello world Welcome</a>.</p>
+	<script type="text/javascript">
+		$(function ($) {
+			var temp=$("#personcontent")[0].nextElementSibling;
+			$(temp.firstChild).click(function(){
+				var urllink=$(this).attr('urllink');
+				$("#page-content-area").load(urllink,null, function () {console.log("Create new person div load partial page")});});
+			$(temp.nextElementSibling.firstChild).click(function(){
+				var urllink=$(this).attr('urllink');
+				$("#page-content-area").load(urllink,null, function () {console.log("back to hello world Welcome div load partial page")});});
+			$.get("/gradle_springmvc-1.0/mymvc/getPersons.do", null,function(result){
+				if (result.success){var plist="";
+				for (p in result.personlist){
+					var person=result.personlist[p];
+					plist=plist+"<li><p>"+person.firstName+" "+person.lastName+' <a href="javascript:void(0)" urllink="/gradle_springmvc-1.0/mymvc/editperson.do?id='+person.id+'">Edit</a> <a href="javascript:void(0)" urllink="/gradle_springmvc-1.0/mymvc/deleteperson.do?id='+person.id+'">Delete</a></p></li>';
+				}
+				$("#personcontent").html("<ol>"+plist+"</ol>");
+				$("#personcontent").find('a').each(function(i,e){
+										$(e).click(function(){$("#page-content-area").load($(e).attr('urllink'),null,function(){console.log('personcontent div load');});});});}
+			});
+		})
+	</script>
+  </body>
+</html>

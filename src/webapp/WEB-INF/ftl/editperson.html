@@ -1,0 +1,138 @@
+<html>
+<body>
+<h1>Spring mvc - Edit Person Update Information</h1>
+
+<p>Use the form below to edit your information.</p>
+<form id="EditpForm" name="EditpForm" action="/gradle_springmvc-1.0/mymvc/saveperson.do" onsubmit="return false;" method="post">
+<table>
+	<tbody>
+	<tr>
+		<td><label for="lastName" class="label">First name:</label></td>
+		<td><input type="text" name="firstName" id="firstName"></td>
+	</tr>
+	<tr>
+		<td><label for="lastName" class="label">Last name:</label></td>
+		<td><input type="text" name="lastName" id="lastName"></td>
+	</tr>
+	<tr>
+		<td><label for="lastName" class="label">Phone:</label></td>
+		<td><input type="text" name="phone" id="phone"></td>
+	</tr>
+	<tr>
+		<td><label for="lastName" class="label">Email:</label></td>
+		<td><input type="text" name="email" id="email"></td>
+	</tr>
+	<tr>
+		<td><label for="lastName" class="label">Gender:</label></td>
+		<td><input type="text" name="gender" id="gender"></td>
+	</tr>
+	<tr>
+		<td><label for="lastName" class="label">Residency:</label></td>
+		<td><input type="text" name="residency" id="residency"></td>
+	</tr>
+	</tbody></table>
+<hr/>
+<tr>
+    <td colspan="2"><div align="left">
+	<button id="saveChanges" name="saveChanges" value="Save Changes">Save Changes</button>
+</div></td>
+</tr>
+</form>
+<div id="modal-table" class="modal fade" tabindex="-1">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header no-padding">
+				<div class="table-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						<span class="white">&times;</span>
+					</button>
+					&nbsp;
+				</div>
+			</div>
+
+			<div class="modal-body no-padding">
+				<table>
+					<tbody>
+					<tr>
+						<td><label for="lastName" class="label">First name:</label></td>
+						<td><input type="text" name="firstName" id="firstName"></td>
+					</tr>
+					<tr>
+						<td><label for="lastName" class="label">Last name:</label></td>
+						<td><input type="text" name="lastName" id="lastName"></td>
+					</tr>
+					<tr>
+						<td><label for="lastName" class="label">Phone:</label></td>
+						<td><input type="text" name="phone" id="phone"></td>
+					</tr>
+					<tr>
+						<td><label for="lastName" class="label">Gender:</label></td>
+						<td><input type="text" name="gender" id="gender"></td>
+					</tr>
+					<tr>
+						<td><label for="lastName" class="label">Residency:</label></td>
+						<td><input type="text" name="residency" id="residency"></td>
+					</tr>
+					</tbody></table>
+			</div>
+
+			<div class="modal-footer no-margin-top"></div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal-table -->
+<p><a id ="EditPersonback" name="EditPersonback" href="javascript:void(0)" urllink="/gradle_springmvc-1.0/mymvc/myhelloworld.do">Return to home page</a>.</p>
+<script type="text/javascript">
+	$(function ($) {
+		console.log($("#EditPersonback"));
+		$("#EditPersonback").on('click', function () {
+			var urllink=$(this).attr('urllink');
+			console.log(urllink);
+			$("#page-content-area").load(urllink,null, function () {console.log("EditPersonback div load partial page")});});
+		console.log($("#EditpForm"));
+		jQuery.validator.addMethod("isNinedigitNum", function(value, element) {   
+			var phoneexpr = /\d{3}-\d{3}-\d{4}/;
+			return this.optional(element) || (phoneexpr.test(value));
+		}, "plz enter valid phone number");
+		var personValidate=function(){
+			return $("#EditpForm").validate({
+                    rules:{
+						"firstName":{ required:true},
+						"lastName":{ required:true},
+						"email":{email:true},
+						"phone":{isNinedigitNum:true}},
+					messages: {
+						"firstName": {required:"must have first name",minlength:"must no less tha 5 characters"},
+						"lastName": {required:"must have last name",minlength:"must no less tha 5 characters"},
+						"email":{email:"Email address not valid"},
+						"phone":{isNinedigitNum:"plz enter valid phone number,should be(999-999-9999)"}
+					}
+					});
+		};
+		$("#saveChanges").click( function () {
+			var validResult = personValidate();console.log(validResult);
+			if (validResult.form()){
+			var formurl=$("#EditpForm").attr('action');
+			console.log(formurl);
+			$.post(formurl, $("#EditpForm").serialize()).success(function (data, tStatus) {
+				console.log(data);
+				console.log(tStatus);
+				if (tStatus==="success"&&data.success){
+					$('#modal-table').modal('show');
+					$('#modal-table').find('input:text').each(function (i, e) {$(e).val(data.person[e.id]); });
+				}else{alert("update failed");
+				}});}else{validResult.focusInvalid();}});
+		$.get("/gradle_springmvc-1.0/mymvc/queryperson.do", null,function(result){
+			console.log(result);
+			if (result.success){
+				$("#EditpForm").find("input:text").each(function(i,e){
+					if (e.id!==undefined){$(e).val(result.person[e.id]);}
+				});
+			}
+		},dataType='json');
+		personValidate();
+		
+	});
+</script>
+
+</body>
+</html>

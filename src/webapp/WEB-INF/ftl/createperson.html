@@ -1,0 +1,67 @@
+<html>
+	<body>
+		  <div id="pagetitle">
+		  </div>
+		  <form id="saveOrUpdatePersonForm" name="saveOrUpdatePersonForm" action="/gradle_springmvc-1.0/mymvc/saveOrUpdatePerson.do" onsubmit="return false;" method="post">
+			<p></p><table>
+			<tbody>
+				<tr>
+					<td><label for="lastName" class="label">First name:</label></td>
+					<td><input type="text" name="firstName" id="firstName"></td>
+				</tr>
+				<tr>
+					<td><label for="lastName" class="label">Last name:</label></td>
+					<td><input type="text" name="lastName" id="lastName"></td>
+				</tr>
+				<input hidden type="text" name="id" id="id" value="${personid}">
+				<tr><td colspan="2"><p></p></tr>
+				<tr><td colspan="2"><p></p></tr>
+				<tr>
+					<td colspan="2"><div align="right"><input type="submit" id="saveOrUpdatePerson" value="Save"></div></td>
+				</tr>
+		  </tbody></table></form>
+		  <p><a id ="InputPersonback" name="InputPersonback" href="javascript:void(0)" urllink="/gradle_springmvc-1.0/mymvc/myhelloworld.do">back to hello world Welcome</a>.</p>
+		  <script type="text/javascript">
+			$(function ($) {
+				$("#InputPersonback").on('click', function () {
+					var urllink=$(this).attr('urllink');
+					$("#page-content-area").load(urllink,null, function () {console.log("InputPersonback div load partial page")});});
+				var personValidate=function(){
+					return $("#saveOrUpdatePersonForm").validate({
+							rules:{
+								"firstName":{ required:true},
+								"lastName":{ required:true}},
+							messages: {
+								"firstName": {required:"must have first name"},
+								"lastName": {required:"must have last name"}},
+							errorPlacement: function (error, element) {
+								element.attr({ placeholder: error.text() })
+							}
+							});};
+				$("#saveOrUpdatePerson").click(function(){
+					var validResult = personValidate();console.log(validResult);
+					if (validResult.form()){
+						var actionlink=$("#saveOrUpdatePersonForm").attr('action');
+						$.post(actionlink, $("#saveOrUpdatePersonForm").serialize()).success(function (result, tStatus) {
+							console.log(result);console.log(tStatus);
+							if (tStatus==="success"&&result.success){
+								$("#page-content-area").load("/gradle_springmvc-1.0/mymvc/viewperson.do",null,function(){
+									console.log("loaded view person");
+								});
+							}
+						});
+					}else{validResult.focusInvalid();}});
+				personValidate();
+				if ($("#id").val()==="-1"){$("#pagetitle").html("<h3>Create Person</h3>");}else{$("#pagetitle").html("<h3>Edit Person</h3>");
+					$.get("/gradle_springmvc-1.0/mymvc/getPerson.do", {id:$("#id").val()},function(result){
+						if (result.success){
+							$("#saveOrUpdatePersonForm").find("input:text").each(function(i,e){
+								if (e.id!==undefined){$(e).val(result.person[e.id]);}
+							});
+						}
+					});
+				}
+			})
+		  </script>
+	</body>
+</html>

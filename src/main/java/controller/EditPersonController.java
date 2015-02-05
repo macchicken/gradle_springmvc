@@ -1,6 +1,8 @@
 package main.java.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -14,9 +16,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import main.java.model.PersonModel;
+import main.java.model.PersonModelVS;
 import main.java.service.NewPersonSevice;
 import main.java.service.PersonService;
 import main.java.service.EditService;
+import main.java.util.ObjectTools;
 
 @Controller
 public class EditPersonController {
@@ -32,8 +37,9 @@ public class EditPersonController {
 
 	@RequestMapping(value="/mymvc/saveperson.do", method = RequestMethod.POST)  
 	@ResponseBody
-	public Map<String,Object> savePersonInfo(Person person){
-		editService.savePerson(person);
+	public Map<String,Object> savePersonInfo(PersonModel person){
+		Person data=(Person) ObjectTools.MapToObject(person, new Person());
+		editService.savePerson(data);
 		HashMap<String,Object> result=new HashMap<String,Object>();
 		result.put("success", true);
 		result.put("person", person);
@@ -43,9 +49,10 @@ public class EditPersonController {
 	@RequestMapping(value="/mymvc/queryperson.do", method = RequestMethod.GET)  
 	@ResponseBody
 	public Map<String,Object> queryPersonInfo(){
+		Person data=editService.getPerson();
 		HashMap<String,Object> result=new HashMap<String,Object>();
 		result.put("success", true);
-		result.put("person", editService.getPerson());
+		result.put("person", ObjectTools.MapToObject(data, new PersonModel()));
 		return result;
 	}
 
@@ -81,27 +88,30 @@ public class EditPersonController {
 	@RequestMapping(value="/mymvc/getPerson.do", method = RequestMethod.GET)  
 	@ResponseBody
 	public Map<String,Object> getPersonInfo(String id){
+		Person data=personService.getPerson(Integer.parseInt(id));
 		HashMap<String,Object> result=new HashMap<String,Object>();
 		result.put("success", true);
-		result.put("person", personService.getPerson(Integer.parseInt(id)));
+		result.put("person", ObjectTools.MapToObject(data, new PersonModel()));
 		return result;
 	}
 	@RequestMapping(value="/mymvc/getPersonindb.do", method = RequestMethod.GET)  
 	@ResponseBody
 	public Map<String,Object> getPersonInfoIndb(String id){
+		PersonVS data=newPersonSerivce.select(id);
 		HashMap<String,Object> result=new HashMap<String,Object>();
 		result.put("success", true);
-		result.put("person", newPersonSerivce.select(id));
+		result.put("person", ObjectTools.MapToObject(data, new PersonModelVS()));
 		return result;
 	}
 
 	@RequestMapping(value="/mymvc/saveOrUpdatePerson.do", method = RequestMethod.POST)  
 	@ResponseBody
-	public Map<String,Object> saveOrUpdatePersonInfo(Person person){
+	public Map<String,Object> saveOrUpdatePersonInfo(PersonModel person){
+		Person data=(Person) ObjectTools.MapToObject(person, new Person());
 		if (person.getId() >-1) {
-			personService.update(person) ;
+			personService.update(data) ;
 		} else {
-			personService.save(person);
+			personService.save(data);
 		}
 		HashMap<String,Object> result=new HashMap<String,Object>();
 		result.put("success", true);
@@ -109,13 +119,14 @@ public class EditPersonController {
 	}
 	@RequestMapping(value="/mymvc/saveOrUpdatePersonindb.do", method = RequestMethod.POST)  
 	@ResponseBody
-	public Map<String,Object> saveOrUpdatePersonInfoIndb(PersonVS person){
-		if (person.getId()!=null&&!"-1".equals(person.getId().trim())) {
-			newPersonSerivce.update(person);
+	public Map<String,Object> saveOrUpdatePersonInfoIndb(PersonModelVS person){
+		PersonVS data=(PersonVS) ObjectTools.MapToObject(person, new PersonVS());
+		if (data.getId()!=null&&!"-1".equals(data.getId().trim())) {
+			newPersonSerivce.update(data);
 		} else {
 			String newId= java.util.UUID.randomUUID().toString().replaceAll("-", "");
-			person.setId(newId);
-			newPersonSerivce.save(person);
+			data.setId(newId);
+			newPersonSerivce.save(data);
 		}
 		HashMap<String,Object> result=new HashMap<String,Object>();
 		result.put("success", true);
@@ -125,17 +136,27 @@ public class EditPersonController {
 	@RequestMapping(value="/mymvc/getPersons.do", method = RequestMethod.GET)  
 	@ResponseBody
 	public Map<String,Object> getPersonsInfo(){
+		List<PersonModel> personList = new ArrayList<PersonModel>();
+		List<Person> temp=personService.getPersons();
+		for (Person p : temp){
+			personList.add((PersonModel) ObjectTools.MapToObject(p, new PersonModel()));
+		}
 		HashMap<String,Object> result=new HashMap<String,Object>();
 		result.put("success", true);
-		result.put("personlist", personService.getPersons());
+		result.put("personlist", personList);
 		return result;
 	}
 	@RequestMapping(value="/mymvc/getPersonsindb.do", method = RequestMethod.GET)  
 	@ResponseBody
 	public Map<String,Object> getPersonsInfoIndb(){
+		List<PersonModelVS> personList = new ArrayList<PersonModelVS>();
+		List<PersonVS> temp=newPersonSerivce.selectAll();
+		for (PersonVS p : temp){
+			personList.add((PersonModelVS) ObjectTools.MapToObject(p, new PersonModelVS()));
+		}
 		HashMap<String,Object> result=new HashMap<String,Object>();
 		result.put("success", true);
-		result.put("personlist", newPersonSerivce.selectAll());
+		result.put("personlist", personList);
 		return result;
 	}
 

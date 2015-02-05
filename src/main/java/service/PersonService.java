@@ -27,7 +27,7 @@ public class PersonService {
 	}
 
 
-	public static List<Person> getPersons() {
+	public List<Person> getPersons() {
 		return personList;
 	}
 	public  void save(Person person) {

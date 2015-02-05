@@ -31,6 +31,12 @@ public class AceAdminController{
 		modelAndView.addObject("personid", -1);
 		return modelAndView;
 	}
+	@RequestMapping(value = "/mymvc/acedatatable.do")
+	public ModelAndView  MyAcedatatable(){
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("aceDatatable");
+		return modelAndView;
+	}
 
 	/*@Override
 	public ModelAndView handleRequest(HttpServletRequest arg0,

@@ -1,0 +1,56 @@
+<div class="page-header">
+	<button class="btn btn-app btn-light btn-xs">
+		<i class="icon-tag bigger-160"></i>
+		View Person
+	</button>
+</div><!-- /.page-header -->
+<div class="row">
+	<div class="col-xs-12">
+		<div class="table-responsive">
+			<table id="person-table-one" class="table table-striped table-bordered table-hover">
+				<thead>
+					<tr>
+						<th>First name</th>
+						<th>Last Name</th>
+						<th>Contact Phone</th>
+						<th>Email</th>
+						<th>Favourite Sports</th>
+						<th>Gender</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					
+				</tbody>
+			</table>
+		</div><!-- /.table-responsive -->
+	</div><!-- /span -->
+</div>
+
+<script type="text/javascript">
+	$(function ($) {
+		var aTableInit = function () {
+                var oTable1 = $('#person-table-one').dataTable({
+                    "bStateSave": true, "bProcessing": true, "bRetrieve": true,
+                    "aoColumns": [{ "bSortable": false }, { "bSortable": false }, { "bSortable": false }, { "bSortable": false }, { "bSortable": false },{ "bSortable": false }],
+                    "oLanguage": { sEmptyTable: 'no person at this moment', sInfo: '', sZeroRecords: '', sInfoEmpty: '', sInfoFiltered: '', sSearch: 'search:', "sLengthMenu": "display _MENU_ records" },
+                    "aLengthMenu": [5, 10]
+                });
+                return oTable1;
+            };
+		var loadDataIntoTableView = function (callbackF) {
+			$.get("/gradle_springmvc-1.0/mymvcdatatable/getPersonsfordt.do", null,function(result){
+				if (result.success){
+					var objTbody = $($('#person-table-one').children()[1]);console.log(objTbody);
+					for (i in result.personlist){
+						var obj=result.personlist[i];
+						objTbody.append('<tr><td>'+obj.firstName+'</td><td>'+obj.lastName+'</td><td>'+obj.phone+'</td><td>'+obj.email+'</td><td>'+obj.sport+'</td><td>'+obj.gender+'</td></tr>');
+					}
+					var rdTable = callbackF();
+					return rdTable;
+				}
+			});
+		}
+		var aTable = loadDataIntoTableView(aTableInit);
+	});
+</script>

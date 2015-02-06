@@ -1,5 +1,9 @@
 package main.java.controller;
 
+import javax.annotation.Resource;
+
+import main.java.service.NewPersonSevice;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -7,6 +11,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class AceAdminController{
+
+	@Resource(name="newPersonSerivce")
+	private NewPersonSevice newPersonSerivce;
 
 	@RequestMapping(value = "/mymvc/aceAdmin.do")
 	public String AceAdmin(){
@@ -35,6 +42,14 @@ public class AceAdminController{
 	public ModelAndView  MyAcedatatable(){
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("aceDatatable");
+		return modelAndView;
+	}
+	@RequestMapping(value = "/mymvc/acedatatableByPage.do")
+	public ModelAndView  MyAcedatatableByPage(){
+		ModelAndView modelAndView = new ModelAndView();
+		Integer count= newPersonSerivce.selectCountAll();
+		modelAndView.setViewName("aceDatatableByPage");
+		modelAndView.addObject("totalperson", count.toString());
 		return modelAndView;
 	}
 

@@ -1,0 +1,49 @@
+<div class="page-header">
+	<button class="btn btn-app btn-light btn-xs" value="${totalperson}">
+		<i class="icon-tag bigger-160"></i>
+		View Person
+	</button>
+</div><!-- /.page-header -->
+<div class="row">
+	<div class="col-xs-12">
+		<form id="atableform">
+		<div class="table-responsive">
+			<table id="person-table-one" class="table table-striped table-bordered table-hover">
+				<thead>
+					<tr>
+						<th>First name</th>
+						<th>Last Name</th>
+						<th>Contact Phone</th>
+						<th>Email</th>
+						<th>Favourite Sports</th>
+						<th>Gender</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					
+				</tbody>
+			</table>
+		</div><!-- /.table-responsive -->
+		</form>
+	</div><!-- /span -->
+</div>
+
+<script type="text/javascript">
+	$(function ($) {
+		var aTableInit = function () {
+			var totalcount = $('.page-header')[0].firstElementChild.value;console.log(totalcount);
+            var oTable1 = $('#person-table-one').dataTable({
+                "bLengthChange": true, "bFilter": false, "bSort": false, "iDisplayLength": 10, "bProcessing": true, "bServerSide": true, "bDestroy": true,
+                "sAjaxSource": "/gradle_springmvc-1.0/mymvcdatatable/getPersonsByPage.do", "sServerMethod": "POST", "fnServerParams": function (aoData) { aoData.push({ "name": "totalRecord", "value": totalcount }) },
+                "fnDrawCallback": function () { $("#atableform").find('.pagination').find('li.active').unbind("click"); },
+                "aoColumns": [{ "mData": "firstName", "bSortable": true},
+                    { "mData": "lastName", "bSortable": false }, { "mData": "phone", "bSortable": false }, { "mData": "email", "bSortable": false }, { "mData": "sport", "bSortable": false }, { "mData": "gender", "bSortable": false }],
+                "oLanguage": { sEmptyTable: 'no person at this moment', sInfo: '', sZeroRecords: 'no person at this moment', sInfoEmpty: '', sInfoFiltered: '', sSearch: 'search:', "sLengthMenu": "display _MENU_ records" },
+                "aLengthMenu": [5, 10]
+            });
+            return oTable1;
+        };
+		var aTable = aTableInit();
+	});
+</script>

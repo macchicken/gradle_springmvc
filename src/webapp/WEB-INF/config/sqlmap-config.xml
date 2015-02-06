@@ -21,4 +21,10 @@
     <select id="selectAll" resultType="PersonVS">
         select * from example_person
     </select>
+    <select id="selectBySize" parameterType="map" resultType="PersonVS">
+        select * from example_person limit #{pageSize} offset #{offset}
+    </select>
+    <select id="selectCountAll" resultType="int">
+        select count(1) from example_person
+    </select>
 </mapper>

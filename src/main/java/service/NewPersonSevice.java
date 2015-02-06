@@ -1,6 +1,7 @@
 package main.java.service;
 
 import java.util.List;
+import java.util.Map;
 
 import main.java.dao.PersonDao;
 import main.java.dto.PersonVS;
@@ -39,6 +40,16 @@ public class NewPersonSevice implements IPersonServie {
 
 	public void setPersonDao(PersonDao personDao) {
 		this.personDao = personDao;
+	}
+
+	@Override
+	public List<PersonVS> selectBySize(Map<String,Integer> params) {
+		return personDao.selectBySize(params);
+	}
+
+	@Override
+	public Integer selectCountAll() {
+		return personDao.selectCountAll();
 	}
 
 

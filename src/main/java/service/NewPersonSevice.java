@@ -9,6 +9,7 @@ import main.java.dto.PersonVS;
 public class NewPersonSevice implements IPersonServie {
 
 	private PersonDao personDao;
+
 	@Override
 	public void save(PersonVS person) {
 		personDao.savePerson(person);
@@ -34,14 +35,6 @@ public class NewPersonSevice implements IPersonServie {
 		return personDao.selectAll();
 	}
 
-	public PersonDao getPersonDao() {
-		return personDao;
-	}
-
-	public void setPersonDao(PersonDao personDao) {
-		this.personDao = personDao;
-	}
-
 	@Override
 	public List<PersonVS> selectBySize(Map<String,Integer> params) {
 		return personDao.selectBySize(params);
@@ -52,5 +45,12 @@ public class NewPersonSevice implements IPersonServie {
 		return personDao.selectCountAll();
 	}
 
+	public PersonDao getPersonDao() {
+		return personDao;
+	}
+	
+	public void setPersonDao(PersonDao personDao) {
+		this.personDao = personDao;
+	}
 
 }

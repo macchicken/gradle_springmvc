@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+ xsi:noNamespaceSchemaLocation="/WEB-INF/localxsd/ehcache_local.xsd"  
+ updateCheck="false" dynamicConfig="false">
+ <!--
+	name: id of a Cache
+	maxElementsInMemory
+	maxElementsOnDisk: 0 means unlimited
+	eternal:Element would be valid forever, timeout would be useless
+	overflowToDisk: when num of Element reach maxElementsInMemory, Ehcache would write the Element to the disk
+	timeToIdleSeconds: idle time of Element before invalid, default 0, infinite
+	timeToLiveSeconds: life time of Element before invalid, default 0, infinite 
+	diskPersistent
+	diskExpiryThreadIntervalSeconds
+	diskSpoolBufferSizeMB: buffer of DiskStore, default 30MB, one for each cache
+	memoryStoreEvictionPolicy: when reach maxElementsInMemory，Ehcache would clean the caches. default is LRU. (FIFO or LFU)
+	-->
+ <diskStore path="D:/tmpdir" />  
+ <defaultCache eternal="false"   
+   maxElementsInMemory="1000"
+   maxElementsOnDisk="1000"
+   overflowToDisk="false"   
+   diskPersistent="false"   
+   timeToIdleSeconds="0"  
+   timeToLiveSeconds="300"   
+   memoryStoreEvictionPolicy="LRU" />  
+  
+</ehcache>

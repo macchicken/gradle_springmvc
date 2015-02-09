@@ -89,10 +89,6 @@
 			console.log(urllink);
 			$("#page-content-area").load(urllink,null, function () {console.log("EditPersonback div load partial page")});});
 		console.log($("#EditpForm"));
-		jQuery.validator.addMethod("isNinedigitNum", function(value, element) {   
-			var phoneexpr = /\d{3}-\d{3}-\d{4}/;
-			return this.optional(element) || (phoneexpr.test(value));
-		}, "plz enter valid phone number");
 		var personValidate=function(){
 			return $("#EditpForm").validate({
                     rules:{
@@ -122,15 +118,13 @@
 				}else{alert("update failed");
 				}});}else{validResult.focusInvalid();}});
 		$.get("/gradle_springmvc-1.0/mymvc/queryperson.do", null,function(result){
-			console.log(result);
+			console.log(result);personValidate();
 			if (result.success){
 				$("#EditpForm").find("input:text").each(function(i,e){
 					if (e.id!==undefined){$(e).val(result.person[e.id]);}
 				});
 			}
 		},dataType='json');
-		personValidate();
-		
 	});
 </script>
 

@@ -47,22 +47,18 @@
 				$("#InputPersonback").on('click', function () {
 					var urllink=$(this).attr('urllink');
 					$("#page-content-area").load(urllink,null, function () {console.log("InputPersonback div load partial page")});});
-				jQuery.validator.addMethod("isNinedigitNum", function(value, element) {   
-					var phoneexpr = /\d{3}-\d{3}-\d{4}/;
-					return this.optional(element) || (phoneexpr.test(value));
-				}, "plz enter valid phone number");
 				var personValidate=function(){
 					return $("#saveOrUpdatePersonForm").validate({
 							rules:{
-								"firstName":{ required:true},
-								"lastName":{ required:true},
+								"firstName":{ required:true,onlyword:true},
+								"lastName":{ required:true,onlyword:true},
 								"phone":{isNinedigitNum:true},
-								"age":{digits:true}},
+								"age":{required:true,digits:true}},
 							messages: {
-								"firstName": {required:"must have first name"},
-								"lastName": {required:"must have last name"},
+								"firstName": {required:"must have first name",onlyword:"plz enter valid word"},
+								"lastName": {required:"must have last name",onlyword:"plz enter valid word"},
 								"phone":{isNinedigitNum:"plz enter valid phone number,should be(999-999-9999)"},
-								"age": {digits:"must enter a valid age"}},
+								"age": {required:"must enter an age",igits:"must enter a valid age"}},
 							errorPlacement: function (error, element) {
 								element.attr({ placeholder: error.text() })
 							}
@@ -80,8 +76,7 @@
 							}
 						});
 					}else{validResult.focusInvalid();}});
-				personValidate();
-				if ($("#id").val()==="-1"){$("#pagetitle").html("<h3>Create Person in db</h3>");}else{$("#pagetitle").html("<h3>Edit Person in db</h3>");
+				if ($("#id").val()==="-1"){$("#pagetitle").html("<h3>Create Person in db</h3>");personValidate();}else{$("#pagetitle").html("<h3>Edit Person in db</h3>");personValidate();
 					$.get("/gradle_springmvc-1.0/mymvc/getPersonindb.do", {id:$("#id").val()},function(result){
 						if (result.success){
 							$("#saveOrUpdatePersonForm").find("input:text").each(function(i,e){

@@ -12,16 +12,14 @@ public class ObjectTools {
 	    		Object value = null;
 				try {
 					value = fie.get(from);
+					if (value instanceof String){value=((String) value).replaceAll("\"", "");}
 					Field tof=to.getClass().getDeclaredField(fie.getName());
 					tof.setAccessible(true);
 					tof.set(to, value);
 				} catch (IllegalArgumentException e) {
-					e.printStackTrace();
 				} catch (IllegalAccessException e) {
-					e.printStackTrace();
 				} catch (NoSuchFieldException e) {
 				} catch (SecurityException e) {
-					e.printStackTrace();
 				}
 	    	}
 		}

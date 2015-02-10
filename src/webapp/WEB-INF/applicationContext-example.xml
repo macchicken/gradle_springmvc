@@ -57,6 +57,14 @@
     </array>
   </property>
 </bean>
+<bean id="aceAppPropertyconfig"
+    class="main.java.Common.AceAppPropertyconfig">
+    <property name="locations">
+        <array>
+            <value>classpath:/apppackage.properties</value>
+        </array>
+    </property>
+</bean>
 <bean id="personMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">  
     <property name="mapperInterface" value="main.java.dao.PersonDao" />  
     <property name="sqlSessionFactory" ref="sqlSessionFactory" />  

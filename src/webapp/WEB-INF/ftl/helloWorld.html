@@ -1,7 +1,30 @@
 <html>
 <body>
 <h1>Welcome to The Wonderful World of Spring MVC</h1>
-
+<h2>${hellomessage}</h2>
+<ul id="HelloWorldMain" name="HelloWorldMain">
+<li>
+<table id="ComfirmBoxListForm" cellspacing="3" cellpadding="3" border="0">
+   <tr><td><input name="ComfirmBoxList" id="ComfirmBoxList_yes" type="checkbox" /><label for="ComfirmBoxList_yes">Yes</label>
+   </td></tr>
+   <tr><td><input name="ComfirmBoxList" id="ComfirmBoxList_no" type="checkbox" /><label for="ComfirmBoxList_no">No</label>
+   </td></tr>
+   <tr><td><input name="ComfirmBoxList" id="ComfirmBoxList_notsure" type="checkbox" /><label for="ComfirmBoxList_notsure">NotSure</label>
+   </td></tr>
+</table>
+</li>
+<li>
+<p>
+<form id="changelanForm" name="changelanForm" action="javascript:void(0)" onsubmit="return false;" method="post">
+<input type="radio" name="languageradio" value="en" checked> English
+<input type="radio" name="languageradio" value="es"> Es
+<input type="radio" name="languageradio" value="chn"> Chinese
+<input type="radio" name="languageradio" value="chnt"> Chinese Traditonal
+</p>
+</form>
+<p><a id="changelan" href='javascript:void(0)' urllink='/gradle_springmvc-1.0/mymvc/changeDisplayWords.do'>Change display words</a></p>
+</li>
+</ul>
 <ul id="HelloWorldExtend" name="HelloWorldExtend">
 <li>
 <p><a href='javascript:void(0)' urllink='/gradle_springmvc-1.0/mymvc/editpersonview.do'>Edit your personal information</a></p>
@@ -25,6 +48,18 @@
 				var urllink=$(this).attr('urllink');
 				console.log(urllink);
 				$("#page-content-area").load(urllink,null, function () {console.log("helloworld div load partial page")});
+			});
+		});
+		$("#changelan").on("click",function(){
+			var actionlink=$(this).attr('urllink');console.log(actionlink);
+			var lancode="en";
+			$("#changelanForm").find("input:radio").each(function(i,e){
+				if (e.checked){lancode=e.value;}
+			});
+			$.post(actionlink, {lanCode:lancode}).success(function (result, tStatus) {
+				if (result.success){$("h2").html(result.hellomessage);
+				$("#ComfirmBoxListForm").find("input:checkbox").each(function(i,e){$(e).next().text(result[e.id.split("_")[1]]);
+				});}
 			});
 		});
 	});

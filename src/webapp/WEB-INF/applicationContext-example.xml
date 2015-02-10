@@ -4,6 +4,7 @@
        xmlns:tx="http://www.springframework.org/schema/tx"
        xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:cache="http://www.springframework.org/schema/cache"
        xsi:schemaLocation="
             http://www.springframework.org/schema/beans
             http://www.springframework.org/schema/beans/spring-beans.xsd
@@ -12,7 +13,9 @@
             http://www.springframework.org/schema/aop
             http://www.springframework.org/schema/aop/spring-aop.xsd
             http://www.springframework.org/schema/context
-            http://www.springframework.org/schema/context/spring-context.xsd">
+            http://www.springframework.org/schema/context/spring-context.xsd
+            http://www.springframework.org/schema/cache
+            http://www.springframework.org/schema/cache/spring-cache-3.1.xsd">
  
 <bean id="postgreldataSource" class="org.apache.commons.dbcp2.BasicDataSource">
      <property name="driverClassName" value="org.postgresql.Driver"></property>
@@ -37,11 +40,16 @@
 </bean>
 <!-- enable transaction annotation support -->
 <tx:annotation-driven transaction-manager="transactionManager" />
-
-
+<cache:annotation-driven cache-manager="cacheManager" />
+<bean id="cacheManagerFactory" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+  <property name="configLocation" value="classpath:/ehcache.xml" />
+</bean>
+<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
+  <property name="cacheManager" ref="cacheManagerFactory" />
+</bean>
 <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
   <property name="dataSource" ref="postgreldataSource" />
-  <property name="mapperLocations" value="/WEB-INF/config/sqlmap-config.xml" />
+  <property name="mapperLocations" value="/WEB-INF/config/sqlmap-config*.xml" />
   <property name="typeAliases">
     <array>
         <value>main.java.dto.PersonVS</value>
@@ -53,6 +61,10 @@
     <property name="mapperInterface" value="main.java.dao.PersonDao" />  
     <property name="sqlSessionFactory" ref="sqlSessionFactory" />  
 </bean> 
+<bean id="newPersonMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">  
+    <property name="mapperInterface" value="main.java.dao.NewPersonDao" />  
+    <property name="sqlSessionFactory" ref="sqlSessionFactory" />  
+</bean> 
 
 <bean id="editService" class="main.java.service.EditServiceInMemory" />
 <bean id="personInMemorySerive" class="main.java.service.PersonService" />
@@ -60,5 +72,7 @@
 <bean id="newPersonSerivce" class="main.java.service.NewPersonSevice" >
     <property name="personDao" ref="personMapper" />
 </bean>
-
+<bean id="newPersonCacheService" class="main.java.service.NewPersonCacheService">
+    <property name="newPersonDao" ref="newPersonMapper" />
+</bean>
 </beans>

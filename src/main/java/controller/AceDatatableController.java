@@ -11,7 +11,7 @@ import javax.annotation.Resource;
 import main.java.dto.PersonVS;
 import main.java.model.PageModel;
 import main.java.model.PersonModelVS;
-import main.java.service.NewPersonSevice;
+import main.java.service.IPersonServie;
 import main.java.util.ObjectTools;
 
 import org.springframework.stereotype.Controller;
@@ -23,13 +23,35 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class AceDatatableController {
 
 	@Resource(name="newPersonSerivce")
-	private NewPersonSevice newPersonSerivce;
+	private IPersonServie newPersonSerivce;
 
+	@Resource(name="newPersonCacheService")
+	private IPersonServie newPersonCacheService; 
+
+	@RequestMapping(value="/mymvcdatatable/modifyPersonInCache.do", method = RequestMethod.POST)  
+	@ResponseBody
+	public Map<String,Object> modifyPersonInCache(PersonModelVS model){
+		PersonVS data=(PersonVS) ObjectTools.MapToObject(model, new PersonVS());
+		newPersonCacheService.update(data);
+		HashMap<String,Object> result=new HashMap<String,Object>();
+		result.put("success", true);
+		result.put("person", model);
+		return result;
+	}
 
 	@RequestMapping(value="/mymvcdatatable/getPersonfordt.do", method = RequestMethod.GET)  
 	@ResponseBody
 	public Map<String,Object> getPersonInfoFordt(String id){
 		PersonVS data=newPersonSerivce.select(id);
+		HashMap<String,Object> result=new HashMap<String,Object>();
+		result.put("success", true);
+		result.put("person", ObjectTools.MapToObject(data, new PersonModelVS()));
+		return result;
+	}
+	@RequestMapping(value="/mymvcdatatable/getPersonByCache.do", method = RequestMethod.POST)  
+	@ResponseBody
+	public Map<String,Object> getPersonByCache(String id){
+		PersonVS data=newPersonCacheService.select(id);
 		HashMap<String,Object> result=new HashMap<String,Object>();
 		result.put("success", true);
 		result.put("person", ObjectTools.MapToObject(data, new PersonModelVS()));
@@ -59,6 +81,19 @@ public class AceDatatableController {
 		params.put("offset", pm.getOffset());
 		params.put("pageSize", Integer.parseInt(iDisplayLength));
 		List<PersonVS> temp=newPersonSerivce.selectBySize(params);
+		String result=resultToJson(sEcho,totalRecord,temp);
+		return result;
+	}
+
+	@RequestMapping(value="/mymvcdatatable/getPersonsByCache.do", method = RequestMethod.POST)  
+	@ResponseBody
+	public String getPersonsfordtByCache(String sEcho,String totalRecord,String iDisplayStart,String iDisplayLength){
+		Map<String,Integer> params=new HashMap<String,Integer>();
+		int pageindex=Integer.parseInt(iDisplayStart)/Integer.parseInt(iDisplayLength)+1;
+		PageModel pm=PageModel.newPageModel(Integer.parseInt(iDisplayLength), pageindex, Integer.parseInt(totalRecord));
+		params.put("offset", pm.getOffset());
+		params.put("pageSize", Integer.parseInt(iDisplayLength));
+		List<PersonVS> temp=newPersonCacheService.selectBySize(params);
 		String result=resultToJson(sEcho,totalRecord,temp);
 		return result;
 	}

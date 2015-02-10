@@ -9,19 +9,18 @@ import javax.annotation.Resource;
 
 import main.java.dto.Person;
 import main.java.dto.PersonVS;
+import main.java.model.PersonModel;
+import main.java.model.PersonModelVS;
+import main.java.service.EditService;
+import main.java.service.IPersonServie;
+import main.java.service.PersonService;
+import main.java.util.ObjectTools;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-
-import main.java.model.PersonModel;
-import main.java.model.PersonModelVS;
-import main.java.service.NewPersonSevice;
-import main.java.service.PersonService;
-import main.java.service.EditService;
-import main.java.util.ObjectTools;
 
 @Controller
 public class EditPersonController {
@@ -33,7 +32,8 @@ public class EditPersonController {
 	private PersonService personService;
 
 	@Resource(name="newPersonSerivce")
-	private NewPersonSevice newPersonSerivce;
+	private IPersonServie newPersonSerivce;
+
 
 	@RequestMapping(value="/mymvc/saveperson.do", method = RequestMethod.POST)  
 	@ResponseBody

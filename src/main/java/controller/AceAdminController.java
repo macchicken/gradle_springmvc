@@ -2,7 +2,7 @@ package main.java.controller;
 
 import javax.annotation.Resource;
 
-import main.java.service.NewPersonSevice;
+import main.java.service.IPersonServie;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,7 +13,10 @@ import org.springframework.web.servlet.ModelAndView;
 public class AceAdminController{
 
 	@Resource(name="newPersonSerivce")
-	private NewPersonSevice newPersonSerivce;
+	private IPersonServie newPersonSerivce;
+
+	@Resource(name="newPersonCacheService")
+	private IPersonServie newPersonCacheService; 
 
 	@RequestMapping(value = "/mymvc/aceAdmin.do")
 	public String AceAdmin(){
@@ -49,6 +52,14 @@ public class AceAdminController{
 		ModelAndView modelAndView = new ModelAndView();
 		Integer count= newPersonSerivce.selectCountAll();
 		modelAndView.setViewName("aceDatatableByPage");
+		modelAndView.addObject("totalperson", count.toString());
+		return modelAndView;
+	}
+	@RequestMapping(value = "/mymvc/acedatatableByCache.do")
+	public ModelAndView  MyAcedatatableByCache(){
+		ModelAndView modelAndView = new ModelAndView();
+		Integer count= newPersonCacheService.selectCountAll();
+		modelAndView.setViewName("acedatatableByCache");
 		modelAndView.addObject("totalperson", count.toString());
 		return modelAndView;
 	}

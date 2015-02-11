@@ -145,23 +145,9 @@ public class AceDatatableController {
 				Field[] fields=p.getClass().getDeclaredFields();
 				StringBuilder temp = new StringBuilder();
 				temp.append("{");
-				for(Field fie : fields){
-					try {
-						fie.setAccessible(true);
-						Object value = null;
-						temp.append("\"");temp.append(fie.getName());temp.append("\":\"");
-						value = fie.get(p);
-						value = value == null ? "" : value.toString();
-						value=value.toString().replace("\"","");
-						temp.append(value); temp.append("\",");
-					} catch (SecurityException e) {
-						e.printStackTrace();
-					} catch (IllegalArgumentException e) {
-						e.printStackTrace();
-					} catch (IllegalAccessException e) {
-						e.printStackTrace();
-					}
-				}
+				temp.append(transferObjToJson(fields,p));
+				Field[] fieldss=p.getClass().getSuperclass().getDeclaredFields();
+				temp.append(transferObjToJson(fieldss,p));
 				temp.delete(temp.length()-1, temp.length());
 				temp.append("},");
 				json.append(temp);
@@ -172,5 +158,24 @@ public class AceDatatableController {
 			json.append("\"aaData\":[]}");
 		}
 		return json.toString();
+	}
+	
+	private StringBuilder transferObjToJson(Field[] fields,Object obj){
+		StringBuilder ojson = new StringBuilder();
+		for(Field fie : fields){
+			try {
+				fie.setAccessible(true);
+				Object value = null;
+				ojson.append("\"");ojson.append(fie.getName());ojson.append("\":\"");
+				value = fie.get(obj);
+				value = value == null ? "" : value.toString();
+				value=value.toString().replace("\"","");
+				ojson.append(value); ojson.append("\",");
+			} catch (SecurityException e) {
+			} catch (IllegalArgumentException e) {
+			} catch (IllegalAccessException e) {
+			}
+		}
+		return ojson;
 	}
 }

@@ -1,7 +1,7 @@
 package main.java.dto;
 
 
-public class PersonVS implements java.io.Serializable{
+public class PersonVS extends AceObject implements java.io.Serializable {
 
 	/**
 	 * 
@@ -9,7 +9,6 @@ public class PersonVS implements java.io.Serializable{
 	private static final long serialVersionUID = 8442444458465139741L;
 
 
-	private String id;
 	private String firstName;
 	private String lastName;
 	private String email;
@@ -20,14 +19,12 @@ public class PersonVS implements java.io.Serializable{
 
     public PersonVS() {
 		super();
-		this.id=null;
 		this.firstName=null;
 		this.lastName=null;
 	}
 
 	public PersonVS(String id, String firstName, String lastName) {
-		super();
-		this.id = id;
+		super.setId(id);
 		this.firstName = firstName;
 		this.lastName = lastName;
 	}
@@ -91,12 +88,7 @@ public class PersonVS implements java.io.Serializable{
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-	public String getId() {
-		return id;
-	}
-	public void setId(String id) {
-		this.id = id;
-	}
+	
 
 	public String toString(){
 		return "First Name: "+firstName+"| Last Name: "+lastName+"| Email: "+email+ "| Phone number:"+phone+"| Age: "+age+" Favorite Sport: " + sport

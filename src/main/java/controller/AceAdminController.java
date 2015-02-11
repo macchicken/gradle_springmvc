@@ -97,15 +97,14 @@ public class AceAdminController{
 	@ResponseBody
 	public Map<String, Object>  MyAcechangeDisplayWords(String lanCode){
 		String hellomessage=(String) aceAppPropertyconfig.getPropertyValue("HelloWorld-message-"+lanCode);
-		String yes=(String) aceAppPropertyconfig.getPropertyValue("yes-"+lanCode);
-		String no=(String) aceAppPropertyconfig.getPropertyValue("no-"+lanCode);
-		String notsure=(String) aceAppPropertyconfig.getPropertyValue("notsure-"+lanCode);
 		HashMap<String,Object> result=new HashMap<String,Object>();
+		Constants.YesNo[] testtemm=Constants.YesNo.values();
+		for (Constants.YesNo i:testtemm){
+			String key=i.name().toLowerCase();
+			result.put(key, aceAppPropertyconfig.getPropertyValue(key+"-"+lanCode));
+		}
 		result.put("success", true);
 		result.put("hellomessage", hellomessage);
-		result.put("yes", yes);
-		result.put("no", no);
-		result.put("notsure", notsure);
 		return result;
 	}
 

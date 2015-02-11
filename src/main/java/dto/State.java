@@ -1,6 +1,11 @@
 package main.java.dto;
 
-public class State {
+public class State implements java.io.Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4495807212962455448L;
 
 	private String stateAbbr;
 	private String stateName;

@@ -1,7 +1,13 @@
 package main.java.dto;
 
 
-public class PersonVS {
+public class PersonVS implements java.io.Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8442444458465139741L;
+
 
 	private String id;
 	private String firstName;

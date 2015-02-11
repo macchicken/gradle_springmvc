@@ -12,6 +12,7 @@ import main.java.dto.PersonVS;
 import main.java.model.PageModel;
 import main.java.model.PersonModelVS;
 import main.java.service.IPersonServie;
+import main.java.service.MyPersonEhcacheServiceBean;
 import main.java.util.ObjectTools;
 
 import org.springframework.stereotype.Controller;
@@ -28,11 +29,24 @@ public class AceDatatableController {
 	@Resource(name="newPersonCacheService")
 	private IPersonServie newPersonCacheService; 
 
+	@Resource(name="myPersonEhcacheService")
+	private MyPersonEhcacheServiceBean myPersonEhcacheService;
+
 	@RequestMapping(value="/mymvcdatatable/modifyPersonInCache.do", method = RequestMethod.POST)  
 	@ResponseBody
 	public Map<String,Object> modifyPersonInCache(PersonModelVS model){
 		PersonVS data=(PersonVS) ObjectTools.MapToObject(model, new PersonVS());
 		newPersonCacheService.update(data);
+		HashMap<String,Object> result=new HashMap<String,Object>();
+		result.put("success", true);
+		result.put("person", model);
+		return result;
+	}
+	@RequestMapping(value="/mymvcdatatable/modifyPersonInEHCache.do", method = RequestMethod.POST)  
+	@ResponseBody
+	public Map<String,Object> modifyPersonInEHCache(PersonModelVS model){
+		PersonVS data=(PersonVS) ObjectTools.MapToObject(model, new PersonVS());
+		myPersonEhcacheService.update(data);
 		HashMap<String,Object> result=new HashMap<String,Object>();
 		result.put("success", true);
 		result.put("person", model);
@@ -52,6 +66,15 @@ public class AceDatatableController {
 	@ResponseBody
 	public Map<String,Object> getPersonByCache(String id){
 		PersonVS data=newPersonCacheService.select(id);
+		HashMap<String,Object> result=new HashMap<String,Object>();
+		result.put("success", true);
+		result.put("person", ObjectTools.MapToObject(data, new PersonModelVS()));
+		return result;
+	}
+	@RequestMapping(value="/mymvcdatatable/getPersonByEHCache.do", method = RequestMethod.POST)  
+	@ResponseBody
+	public Map<String,Object> getPersonByEHCache(String id){
+		PersonVS data=myPersonEhcacheService.select(id);
 		HashMap<String,Object> result=new HashMap<String,Object>();
 		result.put("success", true);
 		result.put("person", ObjectTools.MapToObject(data, new PersonModelVS()));
@@ -94,6 +117,19 @@ public class AceDatatableController {
 		params.put("offset", pm.getOffset());
 		params.put("pageSize", Integer.parseInt(iDisplayLength));
 		List<PersonVS> temp=newPersonCacheService.selectBySize(params);
+		String result=resultToJson(sEcho,totalRecord,temp);
+		return result;
+	}
+
+	@RequestMapping(value="/mymvcdatatable/getPersonsByEHCache.do", method = RequestMethod.POST)  
+	@ResponseBody
+	public String getPersonsfordtByEHCache(String sEcho,String totalRecord,String iDisplayStart,String iDisplayLength){
+		Map<String,Integer> params=new HashMap<String,Integer>();
+		int pageindex=Integer.parseInt(iDisplayStart)/Integer.parseInt(iDisplayLength)+1;
+		PageModel pm=PageModel.newPageModel(Integer.parseInt(iDisplayLength), pageindex, Integer.parseInt(totalRecord));
+		params.put("offset", pm.getOffset());
+		params.put("pageSize", Integer.parseInt(iDisplayLength));
+		List<PersonVS> temp=myPersonEhcacheService.selectBySize(params);
 		String result=resultToJson(sEcho,totalRecord,temp);
 		return result;
 	}

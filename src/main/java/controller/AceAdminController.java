@@ -9,6 +9,7 @@ import javax.annotation.Resource;
 import main.java.Common.AceAppPropertyconfig;
 import main.java.model.User;
 import main.java.service.IPersonServie;
+import main.java.service.MyPersonEhcacheServiceBean;
 import main.java.util.Constants;
 
 import org.springframework.stereotype.Controller;
@@ -32,7 +33,9 @@ public class AceAdminController{
 
 	@Resource(name="aceAppPropertyconfig")
 	private AceAppPropertyconfig aceAppPropertyconfig;
-
+	
+	@Resource(name="myPersonEhcacheService")
+	private MyPersonEhcacheServiceBean myPersonEhcacheService;
 
 	@RequestMapping(value = "/mymvc/aceAdmin.do")
 	public ModelAndView AceAdmin(ModelMap model){
@@ -90,6 +93,14 @@ public class AceAdminController{
 		ModelAndView modelAndView = new ModelAndView();
 		Integer count= newPersonCacheService.selectCountAll();
 		modelAndView.setViewName("acedatatableByCache");
+		modelAndView.addObject("totalperson", count.toString());
+		return modelAndView;
+	}
+	@RequestMapping(value = "/mymvc/acedatatableByEHCache.do")
+	public ModelAndView  MyAcedatatableByEHCache(){
+		ModelAndView modelAndView = new ModelAndView();
+		Integer count= myPersonEhcacheService.selectCountAll();
+		modelAndView.setViewName("acedatatableByEHCache");
 		modelAndView.addObject("totalperson", count.toString());
 		return modelAndView;
 	}

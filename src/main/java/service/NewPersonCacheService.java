@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 
 import main.java.dao.NewPersonDao;
@@ -14,15 +15,17 @@ public class NewPersonCacheService implements IPersonServie {
 	private NewPersonDao newPersonDao;
 
 	@Override
-	@Cacheable(value="personCache",key="#person.id")
-	public void save(PersonVS person) {
+	@CachePut(value="personCache",key="#person.id")
+	public PersonVS save(PersonVS person) {
 		newPersonDao.savePerson(person);
+		return person;
 	}
 
 	@Override
-	@CacheEvict(value="personCache",key="#person.id")
-	public void update(PersonVS person) {
+	@CachePut(value="personCache",key="#person.id")
+	public PersonVS update(PersonVS person) {
 		newPersonDao.updatePerson(person);
+		return person;
 	}
 
 	@Override

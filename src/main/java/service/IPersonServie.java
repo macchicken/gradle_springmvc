@@ -7,8 +7,8 @@ import main.java.dto.PersonVS;
 
 public interface IPersonServie {
 
-	public void save(PersonVS person);
-	public void update(PersonVS person);
+	public PersonVS save(PersonVS person);
+	public PersonVS update(PersonVS person);
 	public void delete(String id);
 	public PersonVS select(String id);
 	public List<PersonVS> selectAll();

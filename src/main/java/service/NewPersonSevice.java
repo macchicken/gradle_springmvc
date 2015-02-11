@@ -11,13 +11,15 @@ public class NewPersonSevice implements IPersonServie {
 	private PersonDao personDao;
 
 	@Override
-	public void save(PersonVS person) {
+	public PersonVS save(PersonVS person) {
 		personDao.savePerson(person);
+		return person;
 	}
 
 	@Override
-	public void update(PersonVS person) {
+	public PersonVS update(PersonVS person) {
 		personDao.updatePerson(person);
+		return person;
 	}
 
 	@Override

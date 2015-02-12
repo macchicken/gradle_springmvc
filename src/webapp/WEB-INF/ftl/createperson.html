@@ -13,6 +13,14 @@
 					<td><label for="lastName" class="label">Last name:</label></td>
 					<td><input type="text" name="lastName" id="lastName"></td>
 				</tr>
+				<tr>
+					<td><label for="lastName" class="label">Gender:</label></td>
+					<td><input type="text" name="gender" id="gender"></td>
+				</tr>
+				<tr>
+					<td><label for="lastName" class="label">Age:</label></td>
+					<td><input type="text" name="age" id="age"></td>
+				</tr>
 				<input hidden type="text" name="id" id="id" value="${personid}">
 				<tr><td colspan="2"><p></p></tr>
 				<tr><td colspan="2"><p></p></tr>
@@ -29,11 +37,15 @@
 				var personValidate=function(){
 					return $("#saveOrUpdatePersonForm").validate({
 							rules:{
-								"firstName":{ required:true},
-								"lastName":{ required:true}},
+								"firstName":{ required:true,onlyword:true},
+								"lastName":{ required:true,onlyword:true},
+								"gender":{onlyword:true},
+								"age":{required:true,digits:true}},
 							messages: {
-								"firstName": {required:"must have first name"},
-								"lastName": {required:"must have last name"}},
+								"firstName": {required:"must have first name",onlyword:"plz enter valid word"},
+								"lastName": {required:"must have last name",onlyword:"plz enter valid word"},
+								"gender": {onlyword:"plz enter valid word"},
+								"age": {required:"must enter an age",digits:"must enter a valid age"}},
 							errorPlacement: function (error, element) {
 								element.attr({ placeholder: error.text() })
 							}

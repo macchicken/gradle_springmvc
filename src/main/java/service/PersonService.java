@@ -9,6 +9,7 @@ import java.util.TreeMap;
 import org.apache.log4j.Logger;
 
 import main.java.dto.Person;
+import main.java.util.ObjectTools;
 
 public class PersonService {
 
@@ -49,8 +50,7 @@ public class PersonService {
 
 	public  void update(Person person) {
     	Person tempPerson = people.get( person.getId() );
-    	tempPerson.setFirstName( person.getFirstName() );
-    	tempPerson.setLastName(person.getLastName() );
+    	tempPerson=(Person) ObjectTools.MapToObject(person, tempPerson);
     	rebuildPersonList();
     }
 

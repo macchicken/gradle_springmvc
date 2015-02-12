@@ -52,7 +52,7 @@ public class EditPersonController {
 		Person data=editService.getPerson();
 		HashMap<String,Object> result=new HashMap<String,Object>();
 		result.put("success", true);
-		result.put("person", ObjectTools.MapToObject(data, new PersonModel()));
+		result.put("person", ObjectTools.MapToModel(data, new PersonModel()));
 		return result;
 	}
 
@@ -91,7 +91,7 @@ public class EditPersonController {
 		Person data=personService.getPerson(Integer.parseInt(id));
 		HashMap<String,Object> result=new HashMap<String,Object>();
 		result.put("success", true);
-		result.put("person", ObjectTools.MapToObject(data, new PersonModel()));
+		result.put("person", ObjectTools.MapToModel(data, new PersonModel()));
 		return result;
 	}
 	@RequestMapping(value="/mymvc/getPersonindb.do", method = RequestMethod.GET)  
@@ -100,7 +100,7 @@ public class EditPersonController {
 		PersonVS data=newPersonSerivce.select(id);
 		HashMap<String,Object> result=new HashMap<String,Object>();
 		result.put("success", true);
-		result.put("person", ObjectTools.MapToObject(data, new PersonModelVS()));
+		result.put("person", ObjectTools.MapToModel(data, new PersonModelVS()));
 		return result;
 	}
 
@@ -136,10 +136,15 @@ public class EditPersonController {
 	@RequestMapping(value="/mymvc/getPersons.do", method = RequestMethod.GET)  
 	@ResponseBody
 	public Map<String,Object> getPersonsInfo(){
-		List<PersonModel> personList = new ArrayList<PersonModel>();
 		List<Person> temp=personService.getPersons();
+		List<PersonModel> personList = null;
+		if (temp!=null&&temp.size()>0){
+			personList = new ArrayList<PersonModel>(temp.size());
+			int i=0;
 		for (Person p : temp){
-			personList.add((PersonModel) ObjectTools.MapToObject(p, new PersonModel()));
+			personList.add(i,(PersonModel) ObjectTools.MapToModel(p, new PersonModel()));i++;
+		}}else{
+			personList= new ArrayList<PersonModel>();
 		}
 		HashMap<String,Object> result=new HashMap<String,Object>();
 		result.put("success", true);
@@ -149,10 +154,15 @@ public class EditPersonController {
 	@RequestMapping(value="/mymvc/getPersonsindb.do", method = RequestMethod.GET)  
 	@ResponseBody
 	public Map<String,Object> getPersonsInfoIndb(){
-		List<PersonModelVS> personList = new ArrayList<PersonModelVS>();
 		List<PersonVS> temp=newPersonSerivce.selectAll();
-		for (PersonVS p : temp){
-			personList.add((PersonModelVS) ObjectTools.MapToObject(p, new PersonModelVS()));
+		List<PersonModelVS> personList = null;;
+		if (temp!=null&&temp.size()>0){
+			personList = new ArrayList<PersonModelVS>(temp.size());
+			int i=0;
+			for (PersonVS p : temp){
+				personList.add(i,(PersonModelVS) ObjectTools.MapToModel(p, new PersonModelVS()));i++;
+			}}else{
+			personList = new ArrayList<PersonModelVS>();
 		}
 		HashMap<String,Object> result=new HashMap<String,Object>();
 		result.put("success", true);

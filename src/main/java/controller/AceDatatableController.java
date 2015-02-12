@@ -59,7 +59,7 @@ public class AceDatatableController {
 		PersonVS data=newPersonSerivce.select(id);
 		HashMap<String,Object> result=new HashMap<String,Object>();
 		result.put("success", true);
-		result.put("person", ObjectTools.MapToObject(data, new PersonModelVS()));
+		result.put("person", ObjectTools.MapToModel(data, new PersonModelVS()));
 		return result;
 	}
 	@RequestMapping(value="/mymvcdatatable/getPersonByCache.do", method = RequestMethod.POST)  
@@ -68,7 +68,7 @@ public class AceDatatableController {
 		PersonVS data=newPersonCacheService.select(id);
 		HashMap<String,Object> result=new HashMap<String,Object>();
 		result.put("success", true);
-		result.put("person", ObjectTools.MapToObject(data, new PersonModelVS()));
+		result.put("person", ObjectTools.MapToModel(data, new PersonModelVS()));
 		return result;
 	}
 	@RequestMapping(value="/mymvcdatatable/getPersonByEHCache.do", method = RequestMethod.POST)  
@@ -77,17 +77,22 @@ public class AceDatatableController {
 		PersonVS data=myPersonEhcacheService.select(id);
 		HashMap<String,Object> result=new HashMap<String,Object>();
 		result.put("success", true);
-		result.put("person", ObjectTools.MapToObject(data, new PersonModelVS()));
+		result.put("person", ObjectTools.MapToModel(data, new PersonModelVS()));
 		return result;
 	}
 
 	@RequestMapping(value="/mymvcdatatable/getPersonsfordt.do", method = RequestMethod.GET)  
 	@ResponseBody
 	public Map<String,Object> getPersonsInfoFordt(){
-		List<PersonModelVS> personList = new ArrayList<PersonModelVS>();
 		List<PersonVS> temp=newPersonSerivce.selectAll();
-		for (PersonVS p : temp){
-			personList.add((PersonModelVS) ObjectTools.MapToObject(p, new PersonModelVS()));
+		List<PersonModelVS> personList = null;
+		if (temp!=null&&temp.size()>0){
+			personList = new ArrayList<PersonModelVS>(temp.size());int i=0;
+			for (PersonVS p : temp){
+				personList.add(i,(PersonModelVS) ObjectTools.MapToModel(p, new PersonModelVS()));i++;
+			}
+		}else{
+			personList = new ArrayList<PersonModelVS>();
 		}
 		HashMap<String,Object> result=new HashMap<String,Object>();
 		result.put("success", true);

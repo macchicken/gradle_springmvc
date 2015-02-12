@@ -3,6 +3,7 @@ package main.java.Common;
 import java.io.Serializable;
 import java.util.List;
 
+import main.java.dto.AceObject;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.Element;
 
@@ -24,8 +25,16 @@ public class MethodCacheInterceptor implements MethodInterceptor,InitializingBea
 		String targetName = invocation.getThis().getClass().getName();
 		String methodName = invocation.getMethod().getName();
 		Object[] arguments = invocation.getArguments();
-		Object result;
-		String cacheKey = getCacheKey(targetName, methodName, arguments);
+		Object result = null;
+		String cacheKey="";
+		if (methodName.equals("select")){
+			cacheKey=(String) arguments[0];
+		}else if (methodName.equals("update")){
+			AceObject aceobj=(AceObject) arguments[0];
+			cacheKey=aceobj.getId();
+		}else{
+			cacheKey = getCacheKey(targetName, methodName, arguments);
+		}
 		Element element = null;
 		synchronized (this) {
 			element = cache.get(cacheKey);
@@ -33,6 +42,18 @@ public class MethodCacheInterceptor implements MethodInterceptor,InitializingBea
 				result = invocation.proceed();
 				element = new Element(cacheKey, (Serializable) result);
 				cache.put(element);
+				if (result!=null){if (result instanceof List){
+					for (AceObject aobj:(List<AceObject>) result){
+						Element el=new Element(aobj.getId(),aobj);
+						cache.put(el);
+					}
+				}}
+			}else{
+				if (methodName.equals("update")){
+					result = invocation.proceed();
+					element = new Element(cacheKey, (Serializable) result);
+					cache.put(element);
+				}
 			}
 		}
 		return element.getValue();
@@ -49,15 +70,6 @@ public class MethodCacheInterceptor implements MethodInterceptor,InitializingBea
 		return sb.toString();
 	}
 
-	private String getUniqCacheKey(Object[] arguments){
-		StringBuffer sb = new StringBuffer();
-		if ((arguments != null) && (arguments.length != 0)) {
-			for (int i = 0; i < arguments.length; i++) {
-				sb.append(".").append(arguments[i]);
-			}
-		}
-		return sb.toString();
-	}
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		Assert.notNull(cache,"A cache is required. Use setCache(Cache) to provide one.");

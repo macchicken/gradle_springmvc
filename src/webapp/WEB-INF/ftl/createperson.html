@@ -21,6 +21,13 @@
 					<td><label for="lastName" class="label">Age:</label></td>
 					<td><input type="text" name="age" id="age"></td>
 				</tr>
+				<tr>
+					<td><label for="lastName" class="label">Favourite Cars:</label></td>
+					<td><label><input name="carModels" id="carModels" type="checkbox" value="Benz" />Benz </label>
+					<label><input name="carModels" id="carModels" type="checkbox" value="Audi" />Audi </label>
+					<label><input name="carModels" id="carModels" type="checkbox" value="Porsche" />Porsche </label>
+					<label><input name="carModels" id="carModels" type="checkbox" value="Mazda" />Mazda </label></td>
+				</tr>
 				<input hidden type="text" name="id" id="id" value="${personid}">
 				<tr><td colspan="2"><p></p></tr>
 				<tr><td colspan="2"><p></p></tr>
@@ -69,6 +76,10 @@
 						if (result.success){
 							$("#saveOrUpdatePersonForm").find("input:text").each(function(i,e){
 								if (e.id!==undefined){$(e).val(result.person[e.id]);}
+							});
+							var cars=new Array();for (i in result.person.carModels){cars[result.person.carModels[i]]=result.person.carModels[i];}
+							$("#saveOrUpdatePersonForm").find("input:checkbox").each(function(i,e){
+								if (e.id!==undefined&&e.id==="carModels"&&result.person.carModels!=null&&result.person.carModels.length>0){if (e.value==cars[e.value]){e.checked=true;}}
 							});
 						}
 					});

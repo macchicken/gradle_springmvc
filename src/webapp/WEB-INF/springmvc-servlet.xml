@@ -84,6 +84,5 @@
     </bean>  
        
     <bean id="fmXmlEscape" class="freemarker.template.utility.XmlEscape"/>
-    <!-- <mvc:annotation-driven />-->
 	
 </beans>

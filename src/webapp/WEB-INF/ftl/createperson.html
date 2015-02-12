@@ -7,11 +7,11 @@
 			<tbody>
 				<tr>
 					<td><label for="lastName" class="label">First name:</label></td>
-					<td><input type="text" name="firstName" id="firstName"></td>
+					<td><input type="text" name="firstName" id="firstName" placeholder="First name"></td>
 				</tr>
 				<tr>
 					<td><label for="lastName" class="label">Last name:</label></td>
-					<td><input type="text" name="lastName" id="lastName"></td>
+					<td><input type="text" name="lastName" id="lastName" placeholder="Last name"></td>
 				</tr>
 				<tr>
 					<td><label for="lastName" class="label">Gender:</label></td>
@@ -28,11 +28,15 @@
 					<label><input name="carModels" id="carModels" type="checkbox" value="Porsche" />Porsche </label>
 					<label><input name="carModels" id="carModels" type="checkbox" value="Mazda" />Mazda </label></td>
 				</tr>
+				<tr>
+					<td><label></label></td>
+					<td><input hidden type="text" name="carModelserror" id="carModelserror" value="" readonly></td>
+				</tr>
 				<input hidden type="text" name="id" id="id" value="${personid}">
 				<tr><td colspan="2"><p></p></tr>
 				<tr><td colspan="2"><p></p></tr>
 				<tr>
-					<td colspan="2"><div align="right"><input type="submit" id="saveOrUpdatePerson" value="Save"></div></td>
+					<td colspan="2"><div align="right"><input type="button" id="saveOrUpdatePerson" value="Save"/></div></td>
 				</tr>
 		  </tbody></table></form>
 		  <p><a id ="InputPersonback" name="InputPersonback" href="javascript:void(0)" urllink="/gradle_springmvc-1.0/mymvc/myhelloworld.do">back to hello world Welcome</a>.</p>
@@ -47,14 +51,18 @@
 								"firstName":{ required:true,onlyword:true},
 								"lastName":{ required:true,onlyword:true},
 								"gender":{onlyword:true},
-								"age":{required:true,digits:true}},
+								"age":{required:true,digits:true},
+								"carModels":{required:true}},
 							messages: {
 								"firstName": {required:"must have first name",onlyword:"plz enter valid word"},
 								"lastName": {required:"must have last name",onlyword:"plz enter valid word"},
 								"gender": {onlyword:"plz enter valid word"},
-								"age": {required:"must enter an age",digits:"must enter a valid age"}},
+								"age": {required:"must enter an age",digits:"must enter a valid age"},
+								"carModels": {required:"plz select at least one"}},
 							errorPlacement: function (error, element) {
-								element.attr({ placeholder: error.text() })
+								if (element.attr("type")!=="checkbox"){
+								element.attr({ placeholder: error.text() });}
+								else{var ename = element.attr('name');$("#"+ename+"error").val(error.text());$("#"+ename+"error").show();}
 							}
 							});};
 				$("#saveOrUpdatePerson").click(function(){

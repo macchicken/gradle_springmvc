@@ -14,12 +14,21 @@
 					<td><input type="text" name="lastName" id="lastName" placeholder="Last name"></td>
 				</tr>
 				<tr>
-					<td><label for="lastName" class="label">Gender:</label></td>
-					<td><input type="text" name="gender" id="gender"></td>
-				</tr>
-				<tr>
 					<td><label for="lastName" class="label">Age:</label></td>
 					<td><input type="text" name="age" id="age"></td>
+				</tr>
+				<tr>
+					<td><label for="lastName" class="label">Over21:</label></td>
+					<td><input type="checkbox" name="over21" id="over21"/></td>
+				</tr>
+				<tr>
+					<td><label for="lastName" class="label">Gender:</label></td>
+					<td><input list="gender" name="gender">
+						<datalist id="gender">
+						  <option value="Male">
+						  <option value="Female">
+						  <option value="Not Sure">
+						</datalist></td>
 				</tr>
 				<tr>
 					<td><label for="lastName" class="label">Favourite Cars:</label></td>
@@ -50,13 +59,11 @@
 							rules:{
 								"firstName":{ required:true,onlyword:true},
 								"lastName":{ required:true,onlyword:true},
-								"gender":{onlyword:true},
 								"age":{required:true,digits:true},
 								"carModels":{required:true}},
 							messages: {
 								"firstName": {required:"must have first name",onlyword:"plz enter valid word"},
 								"lastName": {required:"must have last name",onlyword:"plz enter valid word"},
-								"gender": {onlyword:"plz enter valid word"},
 								"age": {required:"must enter an age",digits:"must enter a valid age"},
 								"carModels": {required:"plz select at least one"}},
 							errorPlacement: function (error, element) {
@@ -65,12 +72,18 @@
 								else{var ename = element.attr('name');$("#"+ename+"error").val(error.text());$("#"+ename+"error").show();}
 							}
 							});};
+				var checkAgeRelation=function(){
+					var a=$("#saveOrUpdatePersonForm input[name=age]").val()*1;var b=$("#saveOrUpdatePersonForm input[name=over21]")[0].checked;
+					if (a>21&&!b){$("#saveOrUpdatePersonForm input[name=over21]")[0].checked=true; return false;}
+					if (a<=21&&b){$("#saveOrUpdatePersonForm input[name=over21]")[0].checked=false; return false;}
+					return true;
+				};
 				$("#saveOrUpdatePerson").click(function(){
-					var validResult = personValidate();console.log(validResult);
+					var validResult = personValidate();console.log("validResult");console.log(validResult);var checkr=checkAgeRelation();if (!checkr){return false;}
 					if (validResult.form()){
 						var actionlink=$("#saveOrUpdatePersonForm").attr('action');
 						$.post(actionlink, $("#saveOrUpdatePersonForm").serialize()).success(function (result, tStatus) {
-							console.log(result);console.log(tStatus);
+							console.log("result");console.log(result);console.log("tStatus "+tStatus);
 							if (tStatus==="success"&&result.success){
 								$("#page-content-area").load("/gradle_springmvc-1.0/mymvc/viewperson.do",null,function(){
 									console.log("loaded view person");
@@ -85,9 +98,11 @@
 							$("#saveOrUpdatePersonForm").find("input:text").each(function(i,e){
 								if (e.id!==undefined){$(e).val(result.person[e.id]);}
 							});
+							$("#saveOrUpdatePersonForm input[name=gender]").val(result.person["gender"]);
 							var cars=new Array();for (i in result.person.carModels){cars[result.person.carModels[i]]=result.person.carModels[i];}
 							$("#saveOrUpdatePersonForm").find("input:checkbox").each(function(i,e){
-								if (e.id!==undefined&&e.id==="carModels"&&result.person.carModels!=null&&result.person.carModels.length>0){if (e.value==cars[e.value]){e.checked=true;}}
+								if (e.id!==undefined){if (e.id==="carModels"){if (result.person.carModels!=null&&result.person.carModels.length>0){if (e.value==cars[e.value]){e.checked=true;}}}
+								else if (e.id==="over21"){e.checked=result.person.over21;}}
 							});
 						}
 					});

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="gradle_springmvc-1.0" basedir="." default="warp">
+    <property name="src.dir" value="src\main\java"/>
+    <property name="resources.dir" value="src\resources"/>
+    <property name="web.dir" value="src\webapp"/>
+    <property name="classes.dir" value="classes"/>
+    <property name="lib.dir" value="lib"/>
+    <property name="tomcat.home" value="D:\programfile\Apache Software Foundation\Tomcat 7.0\webapps"/>
+	
+    <target name="clean" description="Delete all generated files">
+        <delete dir="${classes.dir}" failonerror="false"/>
+        <delete file="${ant.project.name}.war"/>
+    </target>
+
+    <target name="compile" description="Compiles the Task">
+    	<mkdir dir="${classes.dir}"/>
+        <javac srcdir="${src.dir}" destdir="${classes.dir}" debug="true" includeantruntime="false">
+			<classpath>
+				<fileset dir="${lib.dir}" includes="*.jar"/>
+            </classpath>
+		</javac>
+    </target>
+
+	<target name="warp" description="war package for web container">
+		<war destfile="${ant.project.name}.war">
+			<fileset dir="${web.dir}"/>
+			<lib dir="${lib.dir}"/>
+			<classes dir="${classes.dir}" />
+			<zipfileset dir="${resources.dir}" prefix="WEB-INF/classes"/>
+		</war>
+	</target>
+
+	<target name="publish-tomcate" depends="warp" description="publish to Tomcate">
+		<copy todir="${tomcat.home}">
+			<fileset dir="${basedir}">
+				<include name="${ant.project.name}.war"/>
+			</fileset>
+		</copy>
+	</target>
+</project>

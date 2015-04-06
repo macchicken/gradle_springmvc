@@ -5,8 +5,8 @@
     <div id="personcontent">
 	</div>
  
-    <p><a href="javascript:void(0)" urllink="/gradle_springmvc-1.0/mymvc/createpersonindb.do"> Create new person in database.</a></p>
-    <p><a href="javascript:void(0)" urllink="/gradle_springmvc-1.0/mymvc/myhelloworld.do">back to hello word Welcome</a>.</p>
+    <p><a href="javascript:void(0)" urllink="mymvc/createpersonindb.do"> Create new person in database.</a></p>
+    <p><a href="javascript:void(0)" urllink="mymvc/myhelloworld.do">back to hello word Welcome</a>.</p>
 	<script type="text/javascript">
 		$(function ($) {
 			var temp=$("#personcontent")[0].nextElementSibling;
@@ -16,11 +16,11 @@
 			$(temp.nextElementSibling.firstChild).click(function(){
 				var urllink=$(this).attr('urllink');
 				$("#page-content-area").load(urllink,null, function () {console.log("back to hello world Welcome div load partial page")});});
-			$.get("/gradle_springmvc-1.0/mymvc/getPersonsindb.do", null,function(result){
+			$.get("mymvc/getPersonsindb.do", null,function(result){
 				if (result.success){var plist="";
 				for (p in result.personlist){
 					var person=result.personlist[p];
-					plist=plist+"<li><p>"+person.firstName+" "+person.lastName+' <a href="javascript:void(0)" urllink="/gradle_springmvc-1.0/mymvc/editpersonindb.do?id='+person.id+'">Edit</a> <a href="javascript:void(0)" urllink="/gradle_springmvc-1.0/mymvc/deletepersonindb.do?id='+person.id+'">Delete</a></p></li>';
+					plist=plist+"<li><p>"+person.firstName+" "+person.lastName+' <a href="javascript:void(0)" urllink="mymvc/editpersonindb.do?id='+person.id+'">Edit</a> <a href="javascript:void(0)" urllink="mymvc/eletepersonindb.do?id='+person.id+'">Delete</a></p></li>';
 				}
 				$("#personcontent").html("<ol>"+plist+"</ol>");
 				$("#personcontent").find('a').each(function(i,e){

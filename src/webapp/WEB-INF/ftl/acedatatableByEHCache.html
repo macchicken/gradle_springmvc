@@ -74,7 +74,7 @@
 			var totalcount = $('.page-header')[0].firstElementChild.value;console.log(totalcount);
             var oTable1 = $('#person-table-one').dataTable({
                 "bLengthChange": true, "bFilter": false, "bSort": false, "iDisplayLength": 10, "bProcessing": true, "bServerSide": true, "bDestroy": true,
-                "sAjaxSource": "/gradle_springmvc-1.0/mymvcdatatable/getPersonsByEHCache.do", "sServerMethod": "POST", "fnServerParams": function (aoData) { aoData.push({ "name": "totalRecord", "value": totalcount }) },
+                "sAjaxSource": "mymvcdatatable/getPersonsByEHCache.do", "sServerMethod": "POST", "fnServerParams": function (aoData) { aoData.push({ "name": "totalRecord", "value": totalcount }) },
                 "fnDrawCallback": function () { $("#atableform").find('.pagination').find('li.active').unbind("click"); },
                 "aoColumns": [{ "mData": "id", "bSortable": true, "bVisible": false, "bSearchable": true, "mRender": function (data, type, full) { return '<td>' + data + '</td>'; } },
 				{ "mData": "firstName", "bSortable": true},
@@ -90,7 +90,7 @@
             else { console.log('selected'); aTable.$('tr.selected').removeClass('selected'); $(this).toggleClass('selected');}
         });
 		$('#personmodify').on('click', function () {
-			$.post('/gradle_springmvc-1.0/mymvcdatatable/modifyPersonInEHCache.do', $("#modifyform").serialize()).success(function (result, s) {if (result.success) {console.log(result);}});
+			$.post('mymvcdatatable/modifyPersonInEHCache.do', $("#modifyform").serialize()).success(function (result, s) {if (result.success) {console.log(result);}});
 		});
 		$($('#person-table-one').parent().parent().children()[1]).on('click', function () {
             var editC = aTable.$('tr.selected');
@@ -98,7 +98,7 @@
             if (editC.length === 0) { alert('choose one'); return false; }
             var lecid = aTable.fnGetData(editC[0]._DT_RowIndex).id; console.log(lecid);
             if ($.trim(lecid) == '') { return false;}
-            $.post('/gradle_springmvc-1.0/mymvcdatatable/getPersonByEHCache.do', { id: lecid }).success(function (result, s){
+            $.post('mymvcdatatable/getPersonByEHCache.do', { id: lecid }).success(function (result, s){
                 if (result.success) {
                     $('#modal-table').find('input:text').each(function (i, e) {
                         if (e.id != null && e.id != '') { $(e).val(result.person[e.id]); }

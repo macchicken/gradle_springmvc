@@ -35,7 +35,7 @@
 			var totalcount = $('.page-header')[0].firstElementChild.value;console.log(totalcount);
             var oTable1 = $('#person-table-one').dataTable({
                 "bLengthChange": true, "bFilter": false, "bSort": false, "iDisplayLength": 10, "bProcessing": true, "bServerSide": true, "bDestroy": true,
-                "sAjaxSource": "/gradle_springmvc-1.0/mymvcdatatable/getPersonsByPage.do", "sServerMethod": "POST", "fnServerParams": function (aoData) { aoData.push({ "name": "totalRecord", "value": totalcount }) },
+                "sAjaxSource": "mymvcdatatable/getPersonsByPage.do", "sServerMethod": "POST", "fnServerParams": function (aoData) { aoData.push({ "name": "totalRecord", "value": totalcount }) },
                 "fnDrawCallback": function () { $("#atableform").find('.pagination').find('li.active').unbind("click"); },
                 "aoColumns": [{ "mData": "firstName", "bSortable": true},
                     { "mData": "lastName", "bSortable": false }, { "mData": "phone", "bSortable": false }, { "mData": "email", "bSortable": false }, { "mData": "sport", "bSortable": false }, { "mData": "gender", "bSortable": false }],

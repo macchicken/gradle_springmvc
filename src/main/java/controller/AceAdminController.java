@@ -37,7 +37,7 @@ public class AceAdminController{
 	@Resource(name="myPersonEhcacheService")
 	private MyPersonEhcacheServiceBean myPersonEhcacheService;
 
-	@RequestMapping(value = "/mymvc/aceAdmin.do")
+	@RequestMapping(value = "aceAdmin.do")
 	public ModelAndView AceAdmin(ModelMap model){
 		ModelAndView modelAndView = new ModelAndView();
 		if (model.get(Constants.ACEUSER)==null){

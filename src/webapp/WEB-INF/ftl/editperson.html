@@ -3,7 +3,7 @@
 <h1>Spring mvc - Edit Person Update Information</h1>
 
 <p>Use the form below to edit your information.</p>
-<form id="EditpForm" name="EditpForm" action="/gradle_springmvc-1.0/mymvc/saveperson.do" onsubmit="return false;" method="post">
+<form id="EditpForm" name="EditpForm" action="mymvc/saveperson.do" onsubmit="return false;" method="post">
 <table>
 	<tbody>
 	<tr>
@@ -80,7 +80,7 @@
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->
 </div><!-- /.modal-table -->
-<p><a id ="EditPersonback" name="EditPersonback" href="javascript:void(0)" urllink="/gradle_springmvc-1.0/mymvc/myhelloworld.do">Return to home page</a>.</p>
+<p><a id ="EditPersonback" name="EditPersonback" href="javascript:void(0)" urllink="mymvc/myhelloworld.do">Return to home page</a>.</p>
 <script type="text/javascript">
 	$(function ($) {
 		console.log($("#EditPersonback"));
@@ -117,7 +117,7 @@
 					$('#modal-table').find('input:text').each(function (i, e) {$(e).val(data.person[e.id]); });
 				}else{alert("update failed");
 				}});}else{validResult.focusInvalid();}});
-		$.get("/gradle_springmvc-1.0/mymvc/queryperson.do", null,function(result){
+		$.get("mymvc/queryperson.do", null,function(result){
 			console.log(result);personValidate();
 			if (result.success){
 				$("#EditpForm").find("input:text").each(function(i,e){

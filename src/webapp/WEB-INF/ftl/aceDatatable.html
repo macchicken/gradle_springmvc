@@ -41,7 +41,7 @@
                 return oTable1;
             };
 		var loadDataIntoTableView = function (callbackF) {
-			$.get("/gradle_springmvc-1.0/mymvcdatatable/getPersonsfordt.do", null,function(result){
+			$.get("mymvcdatatable/getPersonsfordt.do", null,function(result){
 				if (result.success){
 					var objTbody = $($('#person-table-one').children()[1]);console.log(objTbody);
 					for (i in result.personlist){

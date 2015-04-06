@@ -3,7 +3,7 @@
 		  <div id="pagetitle">
 		  </div>
 		 
-		  <form id="saveOrUpdatePersonForm" name="saveOrUpdatePersonForm" action="/gradle_springmvc-1.0/mymvc/saveOrUpdatePersonindb.do" onsubmit="return false;" method="post">
+		  <form id="saveOrUpdatePersonForm" name="saveOrUpdatePersonForm" action="mymvc/saveOrUpdatePersonindb.do" onsubmit="return false;" method="post">
 			<p></p><table>
 			<tbody>
 				<tr>
@@ -41,7 +41,7 @@
 					<td colspan="2"><div align="right"><input type="submit" id="saveOrUpdatePerson" value="Save"></div></td>
 				</tr>
 		  </tbody></table></form>
-		  <p><a id ="InputPersonback" name="InputPersonback" href="javascript:void(0)" urllink="/gradle_springmvc-1.0/mymvc/myhelloworld.do">back to hello world Welcome</a>.</p>
+		  <p><a id ="InputPersonback" name="InputPersonback" href="javascript:void(0)" urllink="mymvc/myhelloworld.do">back to hello world Welcome</a>.</p>
 		  <script type="text/javascript">
 			$(function ($) {
 				$("#InputPersonback").on('click', function () {
@@ -70,14 +70,14 @@
 						$.post(actionlink, $("#saveOrUpdatePersonForm").serialize()).success(function (result, tStatus) {
 							console.log(result);console.log(tStatus);
 							if (tStatus==="success"&&result.success){
-								$("#page-content-area").load("/gradle_springmvc-1.0/mymvc/viewpersonindb.do",null,function(){
+								$("#page-content-area").load("mymvc/viewpersonindb.do",null,function(){
 									console.log("loaded view person in db");
 								});
 							}
 						});
 					}else{validResult.focusInvalid();}});
 				if ($("#id").val()==="-1"){$("#pagetitle").html("<h3>Create Person in db</h3>");personValidate();}else{$("#pagetitle").html("<h3>Edit Person in db</h3>");personValidate();
-					$.get("/gradle_springmvc-1.0/mymvc/getPersonindb.do", {id:$("#id").val()},function(result){
+					$.get("mymvc/getPersonindb.do", {id:$("#id").val()},function(result){
 						if (result.success){
 							$("#saveOrUpdatePersonForm").find("input:text").each(function(i,e){
 								if (e.id!==undefined){$(e).val(result.person[e.id]);}

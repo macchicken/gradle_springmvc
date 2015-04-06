@@ -17,7 +17,7 @@
   $(function ($) {
 	$("#sayHello").click(function(){
 		if ($("#helloCount").text()!==""){var cc=$("#helloCount").text()}else{var cc=0;}
-		$.get("/gradle_springmvc-1.0/mymvc/getMessageInJson.do", {message: $("#mymessage").val() ,count:cc},function(result){
+		$.get("mymvc/getMessageInJson.do", {message: $("#mymessage").val() ,count:cc},function(result){
 			console.log(result);
 			if (result.success){
 				$("#messageText").find("p").each(function(i,e){

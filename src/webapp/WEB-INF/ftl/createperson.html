@@ -2,7 +2,7 @@
 	<body>
 		  <div id="pagetitle">
 		  </div>
-		  <form id="saveOrUpdatePersonForm" name="saveOrUpdatePersonForm" action="/gradle_springmvc-1.0/mymvc/saveOrUpdatePerson.do" onsubmit="return false;" method="post">
+		  <form id="saveOrUpdatePersonForm" name="saveOrUpdatePersonForm" action="mymvc/saveOrUpdatePerson.do" onsubmit="return false;" method="post">
 			<p></p><table>
 			<tbody>
 				<tr>
@@ -48,7 +48,7 @@
 					<td colspan="2"><div align="right"><input type="button" id="saveOrUpdatePerson" value="Save"/></div></td>
 				</tr>
 		  </tbody></table></form>
-		  <p><a id ="InputPersonback" name="InputPersonback" href="javascript:void(0)" urllink="/gradle_springmvc-1.0/mymvc/myhelloworld.do">back to hello world Welcome</a>.</p>
+		  <p><a id ="InputPersonback" name="InputPersonback" href="javascript:void(0)" urllink="mymvc/myhelloworld.do">back to hello world Welcome</a>.</p>
 		  <script type="text/javascript">
 			$(function ($) {
 				$("#InputPersonback").on('click', function () {
@@ -85,7 +85,7 @@
 						$.post(actionlink, $("#saveOrUpdatePersonForm").serialize()).success(function (result, tStatus) {
 							console.log("result");console.log(result);console.log("tStatus "+tStatus);
 							if (tStatus==="success"&&result.success){
-								$("#page-content-area").load("/gradle_springmvc-1.0/mymvc/viewperson.do",null,function(){
+								$("#page-content-area").load("mymvc/viewperson.do",null,function(){
 									console.log("loaded view person");
 								});
 							}
@@ -93,7 +93,7 @@
 					}else{validResult.focusInvalid();}});
 				personValidate();
 				if ($("#id").val()==="-1"){$("#pagetitle").html("<h3>Create Person</h3>");}else{$("#pagetitle").html("<h3>Edit Person</h3>");
-					$.get("/gradle_springmvc-1.0/mymvc/getPerson.do", {id:$("#id").val()},function(result){
+					$.get("mymvc/getPerson.do", {id:$("#id").val()},function(result){
 						if (result.success){
 							$("#saveOrUpdatePersonForm").find("input:text").each(function(i,e){
 								if (e.id!==undefined){$(e).val(result.person[e.id]);}

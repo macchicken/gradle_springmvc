@@ -14,13 +14,15 @@ public class AceAppPropertyconfig extends PropertyPlaceholderConfigurer {
 
 	@Override
 	protected void processProperties(ConfigurableListableBeanFactory beanFactoryToProcess,Properties props) throws BeansException {
-		super.processProperties(beanFactoryToProcess, props);
-		aceproperties = new HashMap<String, Object>();  
-        for (Object key : props.keySet()) {  
-            String keyStr = key.toString();  
-            String value = props.getProperty(keyStr);  
-            aceproperties.put(keyStr, value);  
-        }  
+		if (aceproperties.isEmpty()) {
+			super.processProperties(beanFactoryToProcess, props);
+			aceproperties = new HashMap<String, Object>();
+			for (Object key : props.keySet()) {
+				String keyStr = key.toString();
+				String value = props.getProperty(keyStr);
+				aceproperties.put(keyStr, value);
+			}
+		} 
 	}
 	
 	public HashMap<String, Object> getAceproperties() {

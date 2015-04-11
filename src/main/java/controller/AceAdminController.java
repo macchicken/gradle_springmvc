@@ -12,6 +12,7 @@ import main.java.service.IPersonServie;
 import main.java.service.MyPersonEhcacheServiceBean;
 import main.java.util.Constants;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,14 +41,24 @@ public class AceAdminController{
 	@RequestMapping(value = "aceAdmin.do")
 	public ModelAndView AceAdmin(ModelMap model){
 		ModelAndView modelAndView = new ModelAndView();
-		if (model.get(Constants.ACEUSER)==null){
-			User my=new User("Barry",Calendar.getInstance().getTime());
-			model.addAttribute(Constants.ACEUSER, my);
-		}
 		modelAndView.setViewName("aceAdmin");
 		modelAndView.addObject("myemail", aceAppPropertyconfig.getPropertyValue("myemail"));
 		return modelAndView;
 	}
+
+	@RequestMapping(value = "loginAction.do",method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> AceAdminLogin(String username,String password,String registerEmail,ModelMap model){
+		if (model.get(Constants.ACEUSER)==null){
+			if (StringUtils.isEmpty(username)){username="Barry";}
+			User my=new User(username,Calendar.getInstance().getTime());
+			model.addAttribute(Constants.ACEUSER, my);
+		}
+		HashMap<String,Object> result=new HashMap<String,Object>();
+		result.put("success", true);
+		return result;
+	}
+
 	@RequestMapping(value = "/mymvc/myhelloworld.do")
 	public ModelAndView MyHelloWorld(){
 		ModelAndView modelAndView = new ModelAndView();

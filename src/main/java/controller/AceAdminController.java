@@ -1,20 +1,17 @@
 package main.java.controller;
 
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 
 import main.java.Common.AceAppPropertyconfig;
-import main.java.model.User;
 import main.java.service.IPersonServie;
 import main.java.service.MyPersonEhcacheServiceBean;
 import main.java.util.Constants;
 
-import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -37,26 +34,14 @@ public class AceAdminController{
 	
 	@Resource(name="myPersonEhcacheService")
 	private MyPersonEhcacheServiceBean myPersonEhcacheService;
+	
 
 	@RequestMapping(value = "aceAdmin.do")
-	public ModelAndView AceAdmin(ModelMap model){
+	public ModelAndView AceAdmin(){
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("aceAdmin");
 		modelAndView.addObject("myemail", aceAppPropertyconfig.getPropertyValue("myemail"));
 		return modelAndView;
-	}
-
-	@RequestMapping(value = "loginAction.do",method = RequestMethod.POST)
-	@ResponseBody
-	public Map<String, Object> AceAdminLogin(String username,String password,String registerEmail,ModelMap model){
-		if (model.get(Constants.ACEUSER)==null){
-			if (StringUtils.isEmpty(username)){username="Barry";}
-			User my=new User(username,Calendar.getInstance().getTime());
-			model.addAttribute(Constants.ACEUSER, my);
-		}
-		HashMap<String,Object> result=new HashMap<String,Object>();
-		result.put("success", true);
-		return result;
 	}
 
 	@RequestMapping(value = "/mymvc/myhelloworld.do")
@@ -68,10 +53,10 @@ public class AceAdminController{
 		return modelAndView;
 	}
 	@RequestMapping(value = "/mymvc/myhelloworldsec.do")
-	public ModelAndView MyHelloWorldSec(ModelMap model){
+	public ModelAndView MyHelloWorldSec(HttpSession session){
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("helloWorldSec");
-		modelAndView.addObject(Constants.ACEUSER, model.get(Constants.ACEUSER));
+		modelAndView.addObject(Constants.ACEUSER, session.getAttribute(Constants.ACEUSER));
 		return modelAndView;
 	}
 	@RequestMapping(value = "/mymvc/editpersonview.do")

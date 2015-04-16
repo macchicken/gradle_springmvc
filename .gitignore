@@ -1,1 +1,15 @@
 /bin/
+
+.gradle/2.2.1/taskArtifacts/cache.properties
+*.class
+*.html
+build/docs/javadoc/package-list
+*.gif
+build/docs/javadoc/stylesheet.css
+*.war
+build/tmp/javadoc/javadoc.options
+*.MF
+*.jar
+src/webapp/index.html.back
+*.bin
+.gradle/2.2.1/taskArtifacts/cache.properties.lock

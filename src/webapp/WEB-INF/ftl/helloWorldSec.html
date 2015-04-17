@@ -1,4 +1,8 @@
 <html>
+<head>
+<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+<title>Ace Admin Spring MVC</title>
+</head>
   <body>
 	<h1>Hello World!</h1>
   	<h1>Welcome to The Wonderful World of Spring MVC</h1>
@@ -17,11 +21,11 @@
   $(function ($) {
 	$("#sayHello").click(function(){
 		if ($("#helloCount").text()!==""){var cc=$("#helloCount").text()}else{var cc=0;}
-		$.get("mymvc/getMessageInJson.do", {message: $("#mymessage").val() ,count:cc},function(result){
+		$.get("mymvc/getMessageInJson.do", {message: encodeURIComponent($("#mymessage").val()),count:cc},function(result){
 			console.log(result);
 			if (result.success){
 				$("#messageText").find("p").each(function(i,e){
-					if (e.id!==undefined){$(e).html(result.messageObj[e.id]);}
+					if (e.id!==undefined){$(e).html(decodeURIComponent(result.messageObj[e.id]));}
 					if (e.hidden){e.hidden=false;}
 				});
 			}

@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /*
- * can not use SessionAttributes annoation while has json methods,
- * it would cause ERR_INCOMPLETE_CHUNKED_ENCODING
+ * can not use SessionAttributes annoation with ModelMap while has json methods,
+ * it would cause ERR_INCOMPLETE_CHUNKED_ENCODING when try to create a new session
  */
 @Controller
 public class LoginController {

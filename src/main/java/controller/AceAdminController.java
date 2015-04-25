@@ -6,7 +6,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
-import main.java.Common.AceAppPropertyconfig;
+import main.java.Common.IAceAppPropertyconfig;
 import main.java.service.IPersonServie;
 import main.java.service.MyPersonEhcacheServiceBean;
 import main.java.util.Constants;
@@ -28,7 +28,7 @@ public class AceAdminController{
 	private IPersonServie newPersonCacheService; 
 
 	@Resource(name="aceAppPropertyconfig")
-	private AceAppPropertyconfig aceAppPropertyconfig;
+	private IAceAppPropertyconfig aceAppPropertyconfig;
 	
 	@Resource(name="myPersonEhcacheService")
 	private MyPersonEhcacheServiceBean myPersonEhcacheService;

@@ -18,7 +18,7 @@
 	<classpathentry kind="lib" path="lib/mybatis-spring-1.1.0.jar"/>
 	<classpathentry kind="lib" path="lib/postgresql-9.3-1102.jdbc4.jar"/>
 	<classpathentry kind="lib" path="lib/jsp-api.jar"/>
-	<classpathentry kind="lib" path="lib/servlet-api.jar"/>
+	<classpathentry kind="lib" path="lib/servlet-api.jar" sourcepath="D:/programfile/Apache Software Foundation/apache-tomcat-7.0.59-src/java"/>
 	<classpathentry kind="lib" path="lib/jackson-core-asl-1.9.10.jar"/>
 	<classpathentry kind="lib" path="lib/jackson-mapper-asl-1.9.10.jar"/>
 	<classpathentry kind="lib" path="lib/slf4j-api-1.5.8.jar"/>
@@ -28,7 +28,7 @@
 	<classpathentry kind="lib" path="lib/spring-aop-3.1.0.RELEASE.jar"/>
 	<classpathentry kind="lib" path="lib/spring-asm-3.1.0.RELEASE.jar"/>
 	<classpathentry kind="lib" path="lib/spring-aspects-3.1.0.RELEASE.jar"/>
-	<classpathentry kind="lib" path="lib/spring-beans-3.1.0.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/spring-beans-3.1.0.RELEASE.jar" sourcepath="D:/hc105/spring3/springframework 3.1.0.RELEASE/spring-beans-3.1.0.RELEASE-sources.jar"/>
 	<classpathentry kind="lib" path="lib/spring-context-3.1.0.RELEASE.jar"/>
 	<classpathentry kind="lib" path="lib/spring-context-support-3.1.0.RELEASE.jar"/>
 	<classpathentry kind="lib" path="lib/spring-core-3.1.0.RELEASE.jar"/>
@@ -41,8 +41,8 @@
 	<classpathentry kind="lib" path="lib/spring-oxm-3.1.0.RELEASE.jar"/>
 	<classpathentry kind="lib" path="lib/spring-test-3.1.0.RELEASE.jar"/>
 	<classpathentry kind="lib" path="lib/spring-tx-3.1.0.RELEASE.jar"/>
-	<classpathentry kind="lib" path="lib/spring-web-3.1.0.RELEASE.jar"/>
-	<classpathentry kind="lib" path="lib/spring-webmvc-3.1.0.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/spring-web-3.1.0.RELEASE.jar" sourcepath="D:/hc105/spring3/spring-web-3.1.0.RELEASE-sources.jar"/>
+	<classpathentry kind="lib" path="lib/spring-webmvc-3.1.0.RELEASE.jar" sourcepath="D:/hc105/spring3/spring-webmvc-3.1.0.RELEASE-sources.jar"/>
 	<classpathentry kind="lib" path="lib/spring-webmvc-portlet-3.1.0.RELEASE.jar"/>
 	<classpathentry kind="lib" path="lib/cglib-nodep-2.1_3.jar"/>
 	<classpathentry kind="output" path="bin"/>
